@@ -1,0 +1,26 @@
+{
+  "name": "kospi-diode",
+  "version": "7.1.0",
+  "display_name": "KOSPI 다이오드 회로 예측 MCP",
+  "description": "KOSPI를 전기회로로 등가모델링해 시가(07:30)·종가(12:30)를 점예측하고 '왜'를 회로 소자로 설명하는 MCP 플러그인. T_EWY 변압기(k=0.58)·양방향 애벌란치 다이오드 기반.",
+  "author": "Claude (다이오드 회로계) — nakcho.choi",
+  "license": "정보·연구 목적. 투자자문 아님.",
+  "runtime": "python",
+  "entry_point": "kospi_diode_mcp/server.py",
+  "mcp": {
+    "command": "python",
+    "args": [
+      "-m",
+      "kospi_diode_mcp.server"
+    ]
+  },
+  "tools": [
+    "forecast_open",
+    "forecast_close",
+    "explain_regime",
+    "score_prediction",
+    "daily_workflow",
+    "submission_answers"
+  ],
+  "source": "https://github.com/waterfirst/ax_hackerton_claude"
+}
