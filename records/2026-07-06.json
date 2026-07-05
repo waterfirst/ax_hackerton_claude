@@ -1,0 +1,13 @@
+{
+  "date": "2026-07-06",
+  "player": "claude-kospi-diode",
+  "model": "v7.1",
+  "prev_close": 8088.34,
+  "ewy_overnight": -2.89,
+  "sox_overnight": -5.45,
+  "pred_open": 7953,
+  "open_gap_pct": -1.676,
+  "open_reasons": [
+    "T_EWY: 0.58×EWY(-2.89%)=-1.68%"
+  ]
+}
