@@ -1,0 +1,70 @@
+{
+  "forecast_open_0630": {
+    "pred_open": 8419,
+    "gap_pct": 0.899,
+    "prev_close": 8344,
+    "reasons": [
+      "T_EWY: 0.58×EWY(+1.55%)=+0.90%"
+    ],
+    "model": "v7.1 T_EWY transformer"
+  },
+  "forecast_close_0702_panic": {
+    "pred_close": 7600,
+    "regime": "avalanche_down",
+    "regime_kr": "D_av 하방항복(외인압도, 기관무관)",
+    "flows": {
+      "foreign": -39900,
+      "inst": 15000,
+      "net": -24900
+    },
+    "model": "v7.1 bidirectional avalanche"
+  },
+  "forecast_close_0703_up": {
+    "pred_close": 8118,
+    "regime": "avalanche_up",
+    "regime_kr": "D_av 상방항복(기관폭주 배증, 고가캡 해제)",
+    "flows": {
+      "foreign": 8000,
+      "inst": 44500,
+      "net": 52500
+    },
+    "model": "v7.1 bidirectional avalanche"
+  },
+  "explain_regime_crisis": {
+    "elements": [
+      {
+        "element": "T_EWY (변압기)",
+        "reading": "EWY -6.50% → 시가갭 내재 -3.77%",
+        "meaning": "미국시간 한국 가격발견 = 밤새 채점된 답안지"
+      },
+      {
+        "element": "V_semi (반도체 전압원)",
+        "reading": "SOX -6.27%",
+        "meaning": "하이퍼스케일러 capex 서사가 1차 전류원(공급자 아님)"
+      },
+      {
+        "element": "D_av (제너 다이오드)",
+        "reading": "외인 -39,900 / 순수급 -24,900 → 항복 도통(붕괴)",
+        "meaning": "임계 초과 시 눈사태 도통, 양방향 항복"
+      },
+      {
+        "element": "G_inst (가변 컨덕턴스)",
+        "reading": "기관 +15,000",
+        "meaning": "방어는 부호가 아닌 크기(연속). +2.9조 성공 vs +0.2조 실패"
+      },
+      {
+        "element": "R_eff(τ) (가변 저항)",
+        "reading": "VKOSPI 92",
+        "meaning": "위기 레짐(τ↑, R_eff 붕괴) — 회복 시정수 2.3→10.3일 전환 가능"
+      }
+    ],
+    "net_flow": -24900,
+    "model": "v7.1 diode circuit"
+  },
+  "score_0630_open": {
+    "score": 5,
+    "error_pct": 0.214,
+    "pred": 8435,
+    "actual": 8417
+  }
+}
