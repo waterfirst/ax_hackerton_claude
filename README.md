@@ -138,5 +138,3 @@ python tests/test_core.py                # 오프라인 단위테스트 4종
 - 이것을 알파라 주장하면 혼나야 마땅하다. **이 한계를 커밋 단위로 공개**한 것이 도구의 신뢰 근거다.
 
 ---
-
-*출처: https://github.com/waterfirst/kospi-mw-rc-research (실전 대결 전체 기록) · Claude 다이오드 회로계 · 정보·연구 목적, 투자자문 아님.*
