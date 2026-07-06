@@ -36,6 +36,28 @@ def test_score_tiers():
     assert core.score(8200, 8000)["score"] == 0   # 2.5%
 
 
+def test_us_holiday_discount():
+    """미장 휴장(7/6 교훈): 낡은 EWY 디스카운트 + SOX 교차검증 스킵 → 갭 절대값 축소."""
+    base = core.predict_open(prev_close=8088, ewy_overnight=-2.89, sox_overnight=-5.45)
+    hol = core.predict_open(prev_close=8088, ewy_overnight=-2.89, sox_overnight=-5.45,
+                            us_holiday=True)
+    assert abs(hol["gap_pct"]) < abs(base["gap_pct"])   # 신호 신뢰도↓
+    assert hol["pred_open"] > base["pred_open"]          # 하락폭 완화
+
+
+def test_hyper_bull_damp():
+    """capex 수요서사 강세: 하방 갭 완충 → 덜 하락."""
+    base = core.predict_open(prev_close=8088, ewy_overnight=-2.89, us_holiday=True)
+    bull = core.predict_open(prev_close=8088, ewy_overnight=-2.89, us_holiday=True,
+                             hyper_bull=True)
+    assert bull["gap_pct"] > base["gap_pct"]             # 음수 gap이 0쪽으로
+    assert bull["pred_open"] > base["pred_open"]
+    # bull은 상방(양수 gap)엔 개입 안 함
+    up = core.predict_open(prev_close=8088, ewy_overnight=2.0, hyper_bull=True)
+    up0 = core.predict_open(prev_close=8088, ewy_overnight=2.0)
+    assert up["gap_pct"] == up0["gap_pct"]
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):

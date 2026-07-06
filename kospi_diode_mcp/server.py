@@ -61,6 +61,8 @@ def forecast_open(snapshot: Optional[dict[str, Any]] = None) -> dict[str, Any]:
         ewy_overnight=float(snapshot["ewy_overnight"]),
         sox_overnight=float(snapshot.get("sox_overnight", 0.0)),
         hyper_bear=bool(snapshot.get("hyper_bear", False)),
+        hyper_bull=bool(snapshot.get("hyper_bull", False)),
+        us_holiday=bool(snapshot.get("us_holiday", False)),
         prev_kospi_ret=snapshot.get("prev_kospi_ret"),
         prev_ewy=snapshot.get("prev_ewy"),
     )

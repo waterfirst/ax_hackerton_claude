@@ -26,6 +26,8 @@ except Exception:  # 테스트 환경에 requests 없을 수 있음
 K_EWY = 0.58      # T_EWY 변압기 결합계수 (EWY 오버나잇 → KOSPI 시가갭)
 R_RESID = 0.5     # 잔차 되돌림 계수 (전일 오버슈트 보정, 7/3 교훈)
 GAP_CLAMP = 6.0   # 시가갭 한계 밴드 ±6%
+HOLIDAY_DISCOUNT = 0.4  # 미장 휴장 다음날 EWY 신호 신뢰도 (7/6 교훈: 낡은 신호 참패)
+HYPER_BULL_DAMP = 0.5   # capex 수요서사 강세 시 하방 갭 완충 계수
 
 # 애벌란치 항복 임계 (제너 물리)
 AV_FOREIGN = -30000   # 외인 순매도 항복전압 (계약/억 기준)
@@ -51,15 +53,23 @@ def predict_open(
     ewy_overnight: float,
     sox_overnight: float = 0.0,
     hyper_bear: bool = False,
+    hyper_bull: bool = False,
+    us_holiday: bool = False,
     prev_kospi_ret: Optional[float] = None,
     prev_ewy: Optional[float] = None,
 ) -> dict[str, Any]:
     """시가 점예측 — T_EWY 변압기 결합.
 
-    gap = K_EWY x EWY  (+ 잔차 되돌림)  (+ SOX 교차검증)  (+ 서사 악재 클램프)
+    gap = K_EWY x EWY  (× 휴장 디스카운트)  (+ 잔차)  (+ SOX)  (± 서사 스위치)
     """
     gap = K_EWY * ewy_overnight
     reasons = [f"T_EWY: {K_EWY}×EWY({ewy_overnight:+.2f}%)={gap:+.2f}%"]
+
+    # 미장 휴장 다음날: 오버나잇 EWY가 낡은 신호 → 신뢰도 하락, 갭 축소
+    # (7/6 교훈: 7/3 미국 휴장 → 낡은 EWY -2.89%로 하락예측했으나 실제 갭상승 참패)
+    if us_holiday:
+        gap *= HOLIDAY_DISCOUNT
+        reasons.append(f"미장휴장: EWY 신호 신뢰도↓ (×{HOLIDAY_DISCOUNT}) → {gap:+.2f}%")
 
     # 잔차항: 전일 KOSPI가 EWY-내재를 초과/미달하면 되돌림 (변압기 이중계산 방지)
     if prev_kospi_ret is not None and prev_ewy is not None:
@@ -68,15 +78,22 @@ def predict_open(
         reasons.append(f"잔차되돌림: -{R_RESID}×overshoot({overshoot:+.2f})={-R_RESID*overshoot:+.2f}%")
 
     # SOX 교차검증: 방향 불일치 + 큰 괴리(2%p+)면 절충
+    # 단, 미장 휴장이면 SOX도 낡은 신호 → 교차검증 스킵 (7/6 교훈)
     sox_gap = 0.5 * sox_overnight
-    if abs(gap - sox_gap) > 2.0:
+    if not us_holiday and abs(gap - sox_gap) > 2.0:
         gap = (gap + sox_gap) / 2
         reasons.append(f"SOX교차검증 절충 → {gap:+.2f}%")
 
-    # 하이퍼스케일러 서사 악재(SW_hyper): 상방 차단
+    # SW_hyper 서사 스위치 (bear/bull 배타적)
     if hyper_bear and gap > -1.0:
+        # 하이퍼스케일러 악재: 상방 차단
         gap = min(gap, -1.0)
         reasons.append("SW_hyper bearish: 상방 차단(≤-1.0%)")
+    elif hyper_bull and gap < 0:
+        # capex 수요서사 강세(한국 HBM 공급자 수혜) → 하방 갭 완충
+        # (7/6 교훈: capex +204% 서사가 SOX 약세·EWY 약세를 덮고 반도체 디커플링)
+        gap *= HYPER_BULL_DAMP
+        reasons.append(f"SW_hyper bullish: capex 수요서사, 하방 완충(×{HYPER_BULL_DAMP}) → {gap:+.2f}%")
 
     gap = max(-GAP_CLAMP, min(GAP_CLAMP, gap))
     pred = round(prev_close * (1 + gap / 100))
@@ -85,7 +102,7 @@ def predict_open(
         "gap_pct": round(gap, 3),
         "prev_close": prev_close,
         "reasons": reasons,
-        "model": "v7.1 T_EWY transformer",
+        "model": "v7.2 T_EWY + 휴장/서사 보정",
     }
 
 
