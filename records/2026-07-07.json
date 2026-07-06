@@ -1,0 +1,22 @@
+{
+  "date": "2026-07-07",
+  "player": "claude-kospi-diode",
+  "model": "v7.1",
+  "prev_close": 8051.33,
+  "ewy_overnight": 5.39,
+  "sox_overnight": 2.17,
+  "flags_used": {
+    "hyper_bull": true,
+    "us_holiday": false,
+    "hyper_bear": false,
+    "note": "2026-07-07 시가용. capex 데이터센터 서사(+204% YoY, 기술주펀드 +143억$) 강세 → 하방 갭 완충. 미장 7/7 정상개장이라 휴장룰 미적용(거짓신호 방지).",
+    "set_at": "2026-07-06 17:40 KST",
+    "set_by": "claude"
+  },
+  "pred_open": 8221,
+  "open_gap_pct": 2.106,
+  "open_reasons": [
+    "T_EWY: 0.58×EWY(+5.39%)=+3.13%",
+    "SOX교차검증 절충 → +2.11%"
+  ]
+}
