@@ -13,12 +13,12 @@
   "open_note": "07:35 크론 세션리밋 실패. 새벽 수동 ex-ante 7953 인정(EWY는 미장 마감 고정값).",
   "intraday": {
     "open": 8186.82,
-    "current": 7959.54,
+    "current": 7925.75,
     "high": 8327.26,
     "low": 7815.53,
-    "foreign": -11461,
-    "inst": -9571
+    "foreign": -12156,
+    "inst": -11124
   },
-  "pred_close": 7902,
+  "pred_close": 7882,
   "close_regime": "gap실패+매도(하방 드리프트)"
 }

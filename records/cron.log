@@ -1,0 +1,23 @@
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "close",
+  "pred_close": 7902,
+  "regime": "gap_fail",
+  "regime_kr": "gap실패+매도(하방 드리프트)",
+  "flows": {
+    "foreign": -11461,
+    "inst": -9571,
+    "net": -21032
+  },
+  "model": "v7.1 bidirectional avalanche",
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-06.json",
+  "github": {
+    "push": "ok",
+    "commit": "2026-07-06 close",
+    "repo": "github.com/waterfirst/ax_hackerton_claude.git"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
