@@ -5,9 +5,20 @@
   "prev_close": 7945.92,
   "ewy_overnight": -2.89,
   "sox_overnight": -5.45,
-  "pred_open": 7813,
+  "pred_open": 7953,
   "open_gap_pct": -1.676,
   "open_reasons": [
     "T_EWY: 0.58×EWY(-2.89%)=-1.68%"
-  ]
+  ],
+  "open_note": "07:35 크론 세션리밋 실패. 새벽 수동 ex-ante 7953 인정(EWY는 미장 마감 고정값).",
+  "intraday": {
+    "open": 8186.82,
+    "current": 7959.54,
+    "high": 8327.26,
+    "low": 7815.53,
+    "foreign": -11461,
+    "inst": -9571
+  },
+  "pred_close": 7902,
+  "close_regime": "gap실패+매도(하방 드리프트)"
 }
