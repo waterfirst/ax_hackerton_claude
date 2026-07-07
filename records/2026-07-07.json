@@ -18,5 +18,15 @@
   "open_reasons": [
     "T_EWY: 0.58×EWY(+5.39%)=+3.13%",
     "SOX교차검증 절충 → +2.11%"
-  ]
+  ],
+  "intraday": {
+    "open": 7919.2,
+    "current": 7502.53,
+    "high": 7954.55,
+    "low": 7466.11,
+    "foreign": -25909,
+    "inst": -1264
+  },
+  "pred_close": 7488,
+  "close_regime": "gap실패+매도(하방 드리프트)"
 }
