@@ -18,5 +18,15 @@
   "open_reasons": [
     "T_EWY: 0.58×EWY(-4.51%)=-2.62%",
     "SW_hyper bullish: capex 수요서사, 하방 완충(×0.5) → -1.31%"
-  ]
+  ],
+  "intraday": {
+    "open": 7452.48,
+    "current": 7568.29,
+    "high": 7791.66,
+    "low": 7352.89,
+    "foreign": -5739,
+    "inst": 12375
+  },
+  "pred_close": 7597,
+  "close_regime": "고변동 드리프트(현재가 앵커 폐지)"
 }

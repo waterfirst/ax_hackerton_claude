@@ -123,3 +123,25 @@
   },
   "disclaimer": "정보·연구 목적. 투자자문 아님."
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "open",
+  "pred_open": 7556,
+  "gap_pct": -1.308,
+  "prev_close": 7656.31,
+  "reasons": [
+    "T_EWY: 0.58×EWY(-4.51%)=-2.62%",
+    "SW_hyper bullish: capex 수요서사, 하방 완충(×0.5) → -1.31%"
+  ],
+  "model": "v7.2 T_EWY + 휴장/서사 보정",
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-08.json",
+  "github": {
+    "push": "ok",
+    "commit": "2026-07-08 open",
+    "repo": "github.com/waterfirst/ax_hackerton_claude.git"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
