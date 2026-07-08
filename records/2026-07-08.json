@@ -28,5 +28,19 @@
     "inst": 12375
   },
   "pred_close": 7597,
-  "close_regime": "고변동 드리프트(현재가 앵커 폐지)"
+  "close_regime": "고변동 드리프트(현재가 앵커 폐지)",
+  "actual_open": 7452.48,
+  "actual_close": 7246.79,
+  "open_score": {
+    "score": 1,
+    "error_pct": 1.389,
+    "pred": 7556,
+    "actual": 7452.48
+  },
+  "close_score": {
+    "score": 0,
+    "error_pct": 4.833,
+    "pred": 7597,
+    "actual": 7246.79
+  }
 }
