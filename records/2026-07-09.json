@@ -17,5 +17,15 @@
   "open_gap_pct": 0.458,
   "open_reasons": [
     "T_EWY: 0.58×EWY(+0.79%)=+0.46%"
-  ]
+  ],
+  "intraday": {
+    "open": 7486.64,
+    "current": 7269.16,
+    "high": 7543.86,
+    "low": 7063.76,
+    "foreign": 1508,
+    "inst": 13633
+  },
+  "pred_close": 7215,
+  "close_regime": "고변동 드리프트(현재가 앵커 폐지)"
 }
