@@ -123,9 +123,18 @@ def _flags() -> dict:
     """장전 수동 플래그(records/next_open_flags.json): us_holiday, hyper_bull, hyper_bear."""
     try:
         with open(os.path.join(RECORDS, "next_open_flags.json"), encoding="utf-8") as f:
-            return json.load(f)
+            fl = json.load(f)
     except Exception:
         return {}
+    # 자동만료(2026-07-10 교훈): set_at 날짜가 오늘이 아니면 서사 스위치를 전부 중립화.
+    # 원인이 된 참사 — hyper_bull이 7/6에 켜진 뒤 4일간 재판단 없이 stuck →
+    # 폭락장(-9.4%)에 상방편향 지속 → 7/7·7/8 시가 연패. flag는 '그날'만 유효하도록 강제.
+    set_date = str(fl.get("set_at", ""))[:10]
+    if set_date != TODAY:
+        for k in ("hyper_bull", "hyper_bear", "us_holiday", "sox_colead"):
+            fl[k] = False
+        fl["_expired"] = f"set_at={set_date or '없음'} != {TODAY} → 서사 스위치 중립화"
+    return fl
 
 
 def do_open() -> dict:
@@ -139,6 +148,7 @@ def do_open() -> dict:
         us_holiday=bool(fl.get("us_holiday", False)),
         hyper_bull=bool(fl.get("hyper_bull", False)),
         hyper_bear=bool(fl.get("hyper_bear", False)),
+        sox_colead=bool(fl.get("sox_colead", False)),
     )
     d = load()
     d.update({

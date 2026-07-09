@@ -28,6 +28,8 @@ R_RESID = 0.5     # 잔차 되돌림 계수 (전일 오버슈트 보정, 7/3 교
 GAP_CLAMP = 6.0   # 시가갭 한계 밴드 ±6%
 HOLIDAY_DISCOUNT = 0.4  # 미장 휴장 다음날 EWY 신호 신뢰도 (7/6 교훈: 낡은 신호 참패)
 HYPER_BULL_DAMP = 0.5   # capex 수요서사 강세 시 하방 갭 완충 계수
+SOX_COLEAD_W = 0.6      # SOX 공동앵커: EWY 가중치(나머지 1-W는 SOX). 반도체 주도 아침 보정
+SOX_COLEAD_MIN = 2.5    # SOX 공동앵커 발동 최소 |SOX|%. 강한 반도체 신호일 때만
 
 # 애벌란치 항복 임계 (제너 물리)
 AV_FOREIGN = -30000   # 외인 순매도 항복전압 (계약/억 기준)
@@ -55,6 +57,7 @@ def predict_open(
     hyper_bear: bool = False,
     hyper_bull: bool = False,
     us_holiday: bool = False,
+    sox_colead: bool = False,
     prev_kospi_ret: Optional[float] = None,
     prev_ewy: Optional[float] = None,
 ) -> dict[str, Any]:
@@ -80,9 +83,21 @@ def predict_open(
     # SOX 교차검증: 방향 불일치 + 큰 괴리(2%p+)면 절충
     # 단, 미장 휴장이면 SOX도 낡은 신호 → 교차검증 스킵 (7/6 교훈)
     sox_gap = 0.5 * sox_overnight
-    if not us_holiday and abs(gap - sox_gap) > 2.0:
+    crosscheck_fired = not us_holiday and abs(gap - sox_gap) > 2.0
+    if crosscheck_fired:
         gap = (gap + sox_gap) / 2
         reasons.append(f"SOX교차검증 절충 → {gap:+.2f}%")
+
+    # SOX 공동앵커(비장의 대책): EWY와 SOX가 같은 방향이고 SOX가 강하면(≥MIN) SOX를
+    # 시가 앵커에 블렌딩. KOSPI 시총 ~40%가 반도체 → 반도체 주도 아침엔 SOX가 시가를
+    # 더 잘 끈다. (7/9 교훈: EWY 약·SOX 강일 때 순수 EWY는 갭상승을 크게 과소예측)
+    # 교차검증(대괴리)이 이미 터진 날엔 이중적용 방지 위해 스킵.
+    if (sox_colead and not us_holiday and not crosscheck_fired
+            and gap * sox_gap > 0 and abs(sox_overnight) >= SOX_COLEAD_MIN):
+        gap = SOX_COLEAD_W * gap + (1 - SOX_COLEAD_W) * sox_gap
+        reasons.append(
+            f"SOX공동앵커: EWY×{SOX_COLEAD_W}+SOX×{round(1-SOX_COLEAD_W,2)} "
+            f"(SOX {sox_overnight:+.2f}%) → {gap:+.2f}%")
 
     # SW_hyper 서사 스위치 (bear/bull 배타적)
     if hyper_bear and gap > -1.0:

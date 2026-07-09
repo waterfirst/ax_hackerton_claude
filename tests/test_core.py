@@ -58,6 +58,29 @@ def test_hyper_bull_damp():
     assert up["gap_pct"] == up0["gap_pct"]
 
 
+def test_sox_colead_blend():
+    """SOX 공동앵커(7/9 교훈): EWY 약·SOX 강·같은 방향이면 SOX 블렌딩으로 상방 보정."""
+    # 7/10 재현: EWY +1.11, SOX +3.06 → 순수 EWY보다 위로
+    base = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=3.06)
+    lead = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=3.06,
+                             sox_colead=True)
+    assert lead["gap_pct"] > base["gap_pct"]          # SOX가 위로 끌어올림
+    assert lead["pred_open"] > base["pred_open"]
+    # SOX 약하면(<MIN) 발동 안 함 → 기존과 동일
+    weak = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=1.0,
+                             sox_colead=True)
+    weak0 = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=1.0)
+    assert weak["gap_pct"] == weak0["gap_pct"]
+    # 방향 반대(EWY+ / SOX-)면 발동 안 함
+    opp = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=-3.06,
+                            sox_colead=True)
+    opp0 = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=-3.06)
+    assert opp["gap_pct"] == opp0["gap_pct"]
+    # flag off면 기존과 완전 동일 (기본 동작 불변 보증)
+    off = core.predict_open(prev_close=7291.91, ewy_overnight=1.11, sox_overnight=3.06)
+    assert off["gap_pct"] == base["gap_pct"]
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):
