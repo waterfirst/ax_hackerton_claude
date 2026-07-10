@@ -7,10 +7,18 @@ import core
 
 
 def test_t_ewy_open_coupling():
-    """T_EWY: gap = 0.58 × EWY. EWY +2% → gap +1.16%."""
+    """T_EWY v8: gap = 0.30 × winsor(EWY,±3). EWY +2% → gap +0.6%.
+    (v7 K=0.58은 2년 백테스트에서 baseline에도 패 → v8 K=0.30 재캘리브레이션.)"""
     out = core.predict_open(prev_close=8000, ewy_overnight=2.0, sox_overnight=2.0)
-    assert abs(out["gap_pct"] - 1.16) < 0.01
-    assert out["pred_open"] == round(8000 * 1.0116)
+    assert abs(out["gap_pct"] - 0.6) < 0.01
+    assert out["pred_open"] == round(8000 * 1.006)
+
+
+def test_ewy_winsor_extreme():
+    """v8 winsor: 극단 EWY(+10%)는 ±3%로 축소 → gap = 0.30×3 = 0.9%.
+    (SOX 교차검증 회피 위해 sox는 완만하게 둠)"""
+    out = core.predict_open(prev_close=8000, ewy_overnight=10.0, sox_overnight=2.0)
+    assert abs(out["gap_pct"] - 0.9) < 0.01  # winsor 미적용이면 3.0%였을 것
 
 
 def test_avalanche_down():

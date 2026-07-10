@@ -22,8 +22,12 @@ try:
 except Exception:  # 테스트 환경에 requests 없을 수 있음
     requests = None
 
-# ── 회로 상수 (4일 실전 대결로 캘리브레이션) ─────────────────────
-K_EWY = 0.58      # T_EWY 변압기 결합계수 (EWY 오버나잇 → KOSPI 시가갭)
+# ── 회로 상수 (v8: 2년 602일 백테스트로 재캘리브레이션 2026-07-10) ────────
+# 교훈: v7 K=0.58은 EWY 과신 → 순진 baseline(갭0)에도 짐(MAE 0.86>0.84).
+#       K를 0.30으로 낮추고 극단 EWY를 ±3%로 winsor하면 walk-forward OOS에서
+#       baseline·v7 둘 다 이김(0.78 vs 0.91 vs 0.95). 극단일(|EWY|>3%)에서 특히 개선.
+K_EWY = 0.30      # T_EWY 변압기 결합계수 (v7 0.58 → v8 0.30; EWY 과신 교정)
+EWY_WINSOR = 3.0  # EWY 오버나잇 극단 축소 밴드 ±3% (환율노이즈·미장과민 fat-tail 억제)
 R_RESID = 0.5     # 잔차 되돌림 계수 (전일 오버슈트 보정, 7/3 교훈)
 GAP_CLAMP = 6.0   # 시가갭 한계 밴드 ±6%
 HOLIDAY_DISCOUNT = 0.4  # 미장 휴장 다음날 EWY 신호 신뢰도 (7/6 교훈: 낡은 신호 참패)
@@ -65,8 +69,9 @@ def predict_open(
 
     gap = K_EWY x EWY  (× 휴장 디스카운트)  (+ 잔차)  (+ SOX)  (± 서사 스위치)
     """
-    gap = K_EWY * ewy_overnight
-    reasons = [f"T_EWY: {K_EWY}×EWY({ewy_overnight:+.2f}%)={gap:+.2f}%"]
+    ewy_w = max(-EWY_WINSOR, min(EWY_WINSOR, ewy_overnight))  # v8 극단 winsor
+    gap = K_EWY * ewy_w
+    reasons = [f"T_EWY(v8): {K_EWY}×EWY_w({ewy_w:+.2f}%; raw {ewy_overnight:+.2f})={gap:+.2f}%"]
 
     # 미장 휴장 다음날: 오버나잇 EWY가 낡은 신호 → 신뢰도 하락, 갭 축소
     # (7/6 교훈: 7/3 미국 휴장 → 낡은 EWY -2.89%로 하락예측했으나 실제 갭상승 참패)
@@ -117,7 +122,7 @@ def predict_open(
         "gap_pct": round(gap, 3),
         "prev_close": prev_close,
         "reasons": reasons,
-        "model": "v7.2 T_EWY + 휴장/서사 보정",
+        "model": "v8 T_EWY(K=0.30,winsor±3) + 휴장/서사 보정",
     }
 
 

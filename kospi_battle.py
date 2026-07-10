@@ -6,7 +6,7 @@
   close  12:35  종가 예측 (양방향 애벌란치) → 같은 파일에 추가
   score  16:35  실제 시가/종가 대비 시가·종가 각각 채점 → 파일에 기록
 
-플레이어: claude-kospi-diode (ax_hackerton_claude v7.1)
+플레이어: claude-kospi-diode (ax_hackerton_claude v8 — 2년 백테스트 재캘리브레이션)
 정보·연구 목적. 투자자문 아님.
 """
 from __future__ import annotations
@@ -110,7 +110,7 @@ def load() -> dict:
     if os.path.exists(PATH):
         with open(PATH, encoding="utf-8") as f:
             return json.load(f)
-    return {"date": TODAY, "player": "claude-kospi-diode", "model": "v7.1"}
+    return {"date": TODAY, "player": "claude-kospi-diode", "model": "v8"}
 
 
 def save(d: dict) -> None:
