@@ -18,5 +18,15 @@
   "open_gap_pct": 0.644,
   "open_reasons": [
     "T_EWY: 0.58×EWY(+1.11%)=+0.64%"
-  ]
+  ],
+  "intraday": {
+    "open": 7552.49,
+    "current": 7601.29,
+    "high": 7643.33,
+    "low": 7429.51,
+    "foreign": -4110,
+    "inst": 16590
+  },
+  "pred_close": 7618,
+  "close_regime": "G_inst 강방어 드리프트 연장"
 }

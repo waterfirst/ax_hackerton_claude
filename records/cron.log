@@ -268,3 +268,24 @@
   },
   "disclaimer": "정보·연구 목적. 투자자문 아님."
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "open",
+  "pred_open": 7339,
+  "gap_pct": 0.644,
+  "prev_close": 7291.91,
+  "reasons": [
+    "T_EWY: 0.58×EWY(+1.11%)=+0.64%"
+  ],
+  "model": "v7.2 T_EWY + 휴장/서사 보정",
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-10.json",
+  "github": {
+    "push": "ok",
+    "commit": "2026-07-10 open",
+    "repo": "github.com/waterfirst/ax_hackerton_claude.git"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
