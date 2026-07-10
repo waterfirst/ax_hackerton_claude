@@ -28,5 +28,19 @@
     "inst": 16590
   },
   "pred_close": 7618,
-  "close_regime": "G_inst 강방어 드리프트 연장"
+  "close_regime": "G_inst 강방어 드리프트 연장",
+  "actual_open": 7552.49,
+  "actual_close": 7475.94,
+  "open_score": {
+    "score": 0,
+    "error_pct": 2.827,
+    "pred": 7339,
+    "actual": 7552.49
+  },
+  "close_score": {
+    "score": 0,
+    "error_pct": 1.9,
+    "pred": 7618,
+    "actual": 7475.94
+  }
 }
