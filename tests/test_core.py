@@ -37,6 +37,23 @@ def test_avalanche_up():
     assert out["pred_close"] > 8100  # 현재가 위로 모멘텀 연장
 
 
+def test_trend_down_cont_0713():
+    """v9: 7/13 재현 — 12:35 저가밀착+매도지속 → 종가는 현재가 아래로 연장.
+    구 v7은 현재가(6940)에 앵커해 오차 1.955%였음. v9는 저가 하회 연장."""
+    out = core.predict_close(open_price=7412.03, current=6941.76, high=7529.07,
+                             low=6937.79, foreign=-16790, inst=-5563)
+    assert out["regime"] == "trend_down_cont"
+    assert out["pred_close"] < 6937.79            # 저가 하회 예측
+    assert abs(out["pred_close"] - 6806.93) < 40  # 실제 근접(구 133p 오차 대폭 개선)
+
+
+def test_close_no_misfire_calm():
+    """완만장(소폭 하락, 저가밀착 아님)은 추세지속 오발화 없이 기존 레짐."""
+    out = core.predict_close(open_price=7400, current=7380, high=7420, low=7360,
+                             foreign=-3000, inst=2000)
+    assert out["regime"] not in ("trend_down_cont", "trend_up_cont")
+
+
 def test_score_tiers():
     """티어 채점: 0.2%→5, 0.4%→4, >1.5%→0."""
     assert core.score(8020, 8000)["score"] == 5   # 0.25%

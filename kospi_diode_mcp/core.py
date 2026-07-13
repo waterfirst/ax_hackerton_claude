@@ -41,6 +41,16 @@ AV_NET = -20000       # 외인+기관 순수급 항복전압
 UP_INST = 20000       # 상방 애벌란치 기관 매수 임계
 DEF_INST = 15000      # 강기관 방어 임계
 
+# ── v9 종가 추세지속(자본이탈) 상수 (2026-07-13 교훈) ─────────────────
+# 7/13: 12:35 저가밀착(current-low=4p)인데 gap_fail이 current-low만 봐 현재가에 앵커
+#       → 오후 추가폭락 -135p 놓침(pred 6940 vs actual 6807). 종가 오차 1.955%.
+# 교정: 강한 장중추세 + 저가/고가 밀착 + 순수급 지속이면 종가를 '장중 슬로프'로 연장.
+TREND_DOWN_PCT = -1.2   # 장중 하락 강도 임계(%): 이보다 강하게 빠지면 오후 지속 후보
+TREND_UP_PCT   = 1.2    # 장중 상승 강도 임계(%)
+LOW_PIN  = 0.35         # 현재가가 당일 레인지 하단 35% 이내(저가밀착)
+HIGH_PIN = 0.65         # 현재가가 레인지 상단(고가밀착)
+SELL_NORM = 25000       # 순수급(외인+기관) 정규화 상수
+
 HEAD = {"User-Agent": "Mozilla/5.0", "Referer": "https://finance.naver.com/"}
 
 
@@ -141,28 +151,50 @@ def predict_close(
     우선순위: 하방항복 → 상방폭주 → gap실패 → 강기관드리프트 → 고변동드리프트
     """
     net = foreign + inst
-    # 1. 하방 애벌란치 (제너 항복): 외인 압도 → 저가 아래로 continuation
+    rng = max(high - low, 1e-9)
+    pos = (current - low) / rng               # 0=저가밀착 … 1=고가밀착
+    intr = current - open_price               # 장중 변화(절대)
+    intr_pct = intr / open_price * 100 if open_price else 0.0
+    drop = max(0.0, open_price - current)     # 오전 낙폭(하락일)
+    rise = max(0.0, current - open_price)      # 오전 상승폭
+
+    # 1. 하방 애벌란치 (제너 항복): 외인 압도 → 오전 슬로프를 오후로 강하게 연장
+    #    (v9: 저가밀착이어도 현재가에 안 갇히도록 낙폭 기준 연장으로 교정)
     if foreign <= AV_FOREIGN and net <= AV_NET:
-        pred = round(min(current, low) - 0.5 * (current - low))
-        return _close_result(pred, "D_av 하방항복(외인압도, 기관무관)", "avalanche_down",
+        pred = round(min(current, low) - 0.35 * drop)
+        return _close_result(pred, "D_av 하방항복(외인압도, 저가 하회 연장)", "avalanche_down",
                              foreign, inst, net)
-    # 2. 상방 애벌란치: 기관 폭주+가속 → 고가캡 해제, 모멘텀 연장
-    #    inst_prev(전일 기관)가 있어야 '배증(가속)'을 확인 가능. 없으면 오발화 방지로 미발화.
+    # 1b. 상방 애벌란치(기관 폭주+가속): 극단 신호라 추세지속보다 우선
     if inst >= UP_INST and inst_prev > 0 and inst >= 2 * inst_prev:
         pred = round(current + 0.8 * (current - open_price))
         return _close_result(pred, "D_av 상방항복(기관폭주 배증, 고가캡 해제)", "avalanche_up",
                              foreign, inst, net)
-    # 3. gap 실패 + 매도 → 하방
+    # 2. (v9) 하방 추세지속/자본이탈: 강한 장중하락 + 저가밀착 + 순매도 → 저가 하회 연장
+    #    7/13 교훈: 12:35 저가밀착·매도지속이면 종가는 현재가가 아니라 그 아래로 간다.
+    if intr_pct <= TREND_DOWN_PCT and net < 0 and pos <= LOW_PIN:
+        sell = min(1.0, abs(net) / SELL_NORM)
+        cont = 0.10 + 0.12 * (1 - pos) + 0.08 * sell      # 0.10~0.30
+        pred = round(current - cont * drop)
+        return _close_result(pred, f"하방추세 지속(저가밀착·매도, 연장 {cont:.2f})", "trend_down_cont",
+                             foreign, inst, net)
+    # 3. (v9) 상방 추세지속: 강한 장중상승 + 고가밀착 + 순매수 → 고가 상회 연장
+    if intr_pct >= TREND_UP_PCT and net > 0 and pos >= HIGH_PIN:
+        buy = min(1.0, abs(net) / SELL_NORM)
+        cont = 0.10 + 0.12 * pos + 0.08 * buy
+        pred = round(current + cont * rise)
+        return _close_result(pred, f"상방추세 지속(고가밀착·매수, 연장 {cont:.2f})", "trend_up_cont",
+                             foreign, inst, net)
+    # 5. gap 실패 + 매도 → 하방 (저가밀착 아닐 때의 완만한 하방)
     if current < open_price - 80 and (foreign < -10000 or program < -8000):
         pred = round(current - 0.40 * (current - low))
         return _close_result(pred, "gap실패+매도(하방 드리프트)", "gap_fail",
                              foreign, inst, net)
-    # 4. 강기관 방어(G_inst 연속) + 갭유지 → 되돌림 상방
+    # 6. 강기관 방어(G_inst 연속) + 갭유지 → 되돌림 상방
     if current >= open_price - 80 and inst > DEF_INST:
         pred = round(current + 0.35 * (current - open_price))
         return _close_result(pred, "G_inst 강방어 드리프트 연장", "inst_defense",
                              foreign, inst, net)
-    # 5. 고변동 레짐: 현재가 앵커 폐지 → 장중 드리프트 1/4 연장
+    # 7. 고변동 레짐: 현재가 앵커 폐지 → 장중 드리프트 1/4 연장
     pred = round(current + 0.25 * (current - open_price))
     return _close_result(pred, "고변동 드리프트(현재가 앵커 폐지)", "drift",
                          foreign, inst, net)
@@ -174,7 +206,7 @@ def _close_result(pred, regime_kr, regime_id, foreign, inst, net):
         "regime": regime_id,
         "regime_kr": regime_kr,
         "flows": {"foreign": foreign, "inst": inst, "net": net},
-        "model": "v7.1 bidirectional avalanche",
+        "model": "v9 close: 추세지속(자본이탈) 연장",
     }
 
 
