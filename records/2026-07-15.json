@@ -19,5 +19,15 @@
   "open_gap_pct": 0.9,
   "open_reasons": [
     "T_EWY(v8): 0.3×EWY_w(+3.00%; raw +5.33)=+0.90%"
-  ]
+  ],
+  "intraday": {
+    "open": 7082.91,
+    "current": 7385.13,
+    "high": 7385.13,
+    "low": 7082.91,
+    "foreign": 18047,
+    "inst": 4419
+  },
+  "pred_close": 7473,
+  "close_regime": "상방추세 지속(고가밀착·매수, 연장 0.29)"
 }
