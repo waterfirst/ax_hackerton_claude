@@ -29,5 +29,19 @@
     "inst": 4419
   },
   "pred_close": 7473,
-  "close_regime": "상방추세 지속(고가밀착·매수, 연장 0.29)"
+  "close_regime": "상방추세 지속(고가밀착·매수, 연장 0.29)",
+  "actual_open": 7082.91,
+  "actual_close": 7284.41,
+  "open_score": {
+    "score": 0,
+    "error_pct": 2.314,
+    "pred": 6919,
+    "actual": 7082.91
+  },
+  "close_score": {
+    "score": 0,
+    "error_pct": 2.589,
+    "pred": 7473,
+    "actual": 7284.41
+  }
 }
