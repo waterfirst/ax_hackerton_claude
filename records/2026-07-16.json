@@ -19,5 +19,15 @@
   "open_gap_pct": -0.9,
   "open_reasons": [
     "T_EWY(v8): 0.3×EWY_w(-3.00%; raw -3.02)=-0.90%"
-  ]
+  ],
+  "intraday": {
+    "open": 6960.5,
+    "current": 6830.18,
+    "high": 6995.93,
+    "low": 6730.87,
+    "foreign": -11948,
+    "inst": -14457
+  },
+  "pred_close": 6790,
+  "close_regime": "gap실패+매도(하방 드리프트)"
 }
