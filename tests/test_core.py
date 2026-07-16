@@ -2,6 +2,8 @@
 """오프라인 단위테스트 4종 — 네트워크 불필요."""
 import os
 import sys
+# 적응형 자기수정 상태파일이 존재해도 단위테스트는 항상 v8 기본계수로 결정론적 실행.
+os.environ.setdefault("KOSPI_ADAPTIVE_DISABLE", "1")
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'kospi_diode_mcp'))
 import core
 

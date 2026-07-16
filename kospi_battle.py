@@ -12,6 +12,7 @@
 from __future__ import annotations
 import sys, os, json, datetime, subprocess
 from kospi_diode_mcp import core
+from kospi_diode_mcp import adaptive
 
 HEADER = "🔷 [CLAUDE · KOSPI 다이오드]"
 CHAT_ID = "5767743818"
@@ -141,6 +142,8 @@ def do_open() -> dict:
     prev = core.fetch_prev_close()
     us = core.fetch_overnight()
     fl = _flags()
+    vkospi = core.fetch_vkospi()               # 위기레짐 판정(실패 시 None→정상)
+    prev_ret = core.fetch_prev_kospi_ret()     # 블로우오프 되돌림 학습용
     out = core.predict_open(
         prev_close=prev,
         ewy_overnight=us["EWY"],
@@ -149,16 +152,21 @@ def do_open() -> dict:
         hyper_bull=bool(fl.get("hyper_bull", False)),
         hyper_bear=bool(fl.get("hyper_bear", False)),
         sox_colead=bool(fl.get("sox_colead", False)),
+        prev_kospi_ret=prev_ret,
+        vkospi=vkospi,
     )
     d = load()
     d.update({
         "prev_close": prev,
         "ewy_overnight": us["EWY"],
         "sox_overnight": us.get("SOX", 0.0),
+        "vkospi": vkospi,
+        "prev_kospi_ret": prev_ret,
         "flags_used": fl,
         "pred_open": out["pred_open"],
         "open_gap_pct": out.get("gap_pct"),
         "open_reasons": out.get("reasons", []),
+        "adaptive": out.get("adaptive"),
     })
     save(d)
     return {"mode": "open", **out}
@@ -190,6 +198,17 @@ def do_score() -> dict:
     if d.get("pred_open") is not None:
         so = core.score(d["pred_open"], actual_open)
         d["open_score"], res["open_score"] = so, so
+        # 재귀적 자기수정: 오늘 시가 실측으로 계수 학습(~500일 수렴). 실패해도 채점은 지속.
+        try:
+            learned = adaptive.learn(
+                pred_open=d["pred_open"], actual_open=actual_open,
+                prev_close=d.get("prev_close"), ewy=d.get("ewy_overnight"),
+                prev_kospi_ret=d.get("prev_kospi_ret"), vkospi=d.get("vkospi"),
+                date=d.get("date"),
+            )
+            d["adaptive_learn"], res["adaptive_learn"] = learned, learned
+        except Exception as e:
+            res["adaptive_learn"] = {"error": str(e)[:120]}
     else:
         res["open_score"] = {"note": "시가 예측 기록 없음"}
     if d.get("pred_close") is not None:

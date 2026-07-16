@@ -22,6 +22,13 @@ try:
 except Exception:  # 테스트 환경에 requests 없을 수 있음
     requests = None
 
+# 재귀적 자기수정 레이어(하위호환: 상태파일 없으면 DEFAULTS=현 v8 반환).
+# 패키지(kospi_diode_mcp.core)·단독(sys.path 삽입) 양쪽에서 임포트되도록 이중 처리.
+try:
+    from . import adaptive
+except ImportError:  # test_core.py 처럼 kospi_diode_mcp를 sys.path에 직접 넣은 경우
+    import adaptive
+
 # ── 회로 상수 (v8: 2년 602일 백테스트로 재캘리브레이션 2026-07-10) ────────
 # 교훈: v7 K=0.58은 EWY 과신 → 순진 baseline(갭0)에도 짐(MAE 0.86>0.84).
 #       K를 0.30으로 낮추고 극단 EWY를 ±3%로 winsor하면 walk-forward OOS에서
@@ -74,14 +81,36 @@ def predict_open(
     sox_colead: bool = False,
     prev_kospi_ret: Optional[float] = None,
     prev_ewy: Optional[float] = None,
+    vkospi: Optional[float] = None,
+    params: Optional[dict] = None,
 ) -> dict[str, Any]:
-    """시가 점예측 — T_EWY 변압기 결합.
+    """시가 점예측 — T_EWY 변압기 결합 (+ 재귀적 자기수정 계수 + VKOSPI 위기레짐).
 
-    gap = K_EWY x EWY  (× 휴장 디스카운트)  (+ 잔차)  (+ SOX)  (± 서사 스위치)
+    gap = k x EWY  (× 휴장 디스카운트)  (+ 잔차)  (+ SOX)  (± 서사)  (+ 블로우오프되돌림)
+    - k, winsor 는 adaptive.load_params()가 매일 자기수정한 값(상태파일 없으면 v8 기본).
+    - VKOSPI>=THR 위기레짐이면 CRISIS_K/CRISIS_WINSOR 사용 + 전일급등 되돌림 감산.
     """
-    ewy_w = max(-EWY_WINSOR, min(EWY_WINSOR, ewy_overnight))  # v8 극단 winsor
-    gap = K_EWY * ewy_w
-    reasons = [f"T_EWY(v8): {K_EWY}×EWY_w({ewy_w:+.2f}%; raw {ewy_overnight:+.2f})={gap:+.2f}%"]
+    ap = params if params is not None else adaptive.load_params()
+    crisis = vkospi is not None and vkospi >= ap.get("VKOSPI_CRISIS_THR", 40.0)
+    if crisis:
+        k = ap.get("CRISIS_K", 0.80)
+        winsor = ap.get("CRISIS_WINSOR", 6.0)
+    else:
+        k = ap.get("K_EWY", K_EWY)
+        winsor = ap.get("EWY_WINSOR", EWY_WINSOR)
+
+    ewy_w = max(-winsor, min(winsor, ewy_overnight))  # 적응형 winsor
+    gap = k * ewy_w
+    tag = "v8/위기" if crisis else "v8"
+    reasons = [f"T_EWY({tag}): {round(k, 3)}×EWY_w({ewy_w:+.2f}%; raw {ewy_overnight:+.2f})={gap:+.2f}%"]
+
+    # 위기레짐 블로우오프 되돌림: 전일 KOSPI 급등(+4%↑) 다음날은 프리미엄을 시가에서 반납.
+    # (7/16 교훈: 전일 +6.24% 다음날 시가 -4.45% 갭다운. BLOWOFF_COEF는 자기수정으로 학습.)
+    bo = ap.get("BLOWOFF_COEF", 0.0)
+    if crisis and bo > 0 and prev_kospi_ret is not None and prev_kospi_ret >= 4.0:
+        add = -bo * prev_kospi_ret
+        gap += add
+        reasons.append(f"블로우오프되돌림(위기): -{round(bo, 3)}×전일{prev_kospi_ret:+.2f}%={add:+.2f}%")
 
     # 미장 휴장 다음날: 오버나잇 EWY가 낡은 신호 → 신뢰도 하락, 갭 축소
     # (7/6 교훈: 7/3 미국 휴장 → 낡은 EWY -2.89%로 하락예측했으나 실제 갭상승 참패)
@@ -91,7 +120,7 @@ def predict_open(
 
     # 잔차항: 전일 KOSPI가 EWY-내재를 초과/미달하면 되돌림 (변압기 이중계산 방지)
     if prev_kospi_ret is not None and prev_ewy is not None:
-        overshoot = prev_kospi_ret - K_EWY * prev_ewy
+        overshoot = prev_kospi_ret - k * prev_ewy
         gap += -R_RESID * overshoot
         reasons.append(f"잔차되돌림: -{R_RESID}×overshoot({overshoot:+.2f})={-R_RESID*overshoot:+.2f}%")
 
@@ -132,7 +161,10 @@ def predict_open(
         "gap_pct": round(gap, 3),
         "prev_close": prev_close,
         "reasons": reasons,
-        "model": "v8 T_EWY(K=0.30,winsor±3) + 휴장/서사 보정",
+        "model": f"v8-adaptive T_EWY(k={round(k, 3)},winsor±{round(winsor, 1)}"
+                 f"{',위기' if crisis else ''}) + 휴장/서사 보정",
+        "adaptive": {"k": round(k, 4), "winsor": round(winsor, 2),
+                     "crisis": crisis, "day_count": ap.get("day_count", 0)},
     }
 
 
@@ -281,6 +313,37 @@ def fetch_prev_close() -> float:
            "&requestType=1&startTime=20260601&endTime=20260801&timeframe=day")
     rows = json.loads(requests.get(url, headers=HEAD, timeout=15).text.strip().replace("'", '"'))
     return _f(rows[-1][4])
+
+
+def fetch_prev_kospi_ret() -> Optional[float]:
+    """전일 KOSPI 등락률(%) — 블로우오프 되돌림 학습용. 실패 시 None."""
+    if requests is None:
+        return None
+    try:
+        url = ("https://api.finance.naver.com/siseJson.naver?symbol=KOSPI"
+               "&requestType=1&startTime=20260501&endTime=20260801&timeframe=day")
+        rows = json.loads(requests.get(url, headers=HEAD, timeout=15).text.strip().replace("'", '"'))
+        c_prev, c_pprev = _f(rows[-1][4]), _f(rows[-2][4])
+        if c_pprev:
+            return round((c_prev - c_pprev) / c_pprev * 100.0, 3)
+    except Exception:
+        pass
+    return None
+
+
+def fetch_vkospi() -> Optional[float]:
+    """VKOSPI(변동성지수) 현재값 — 위기레짐 판정용. best-effort, 실패 시 None(→정상레짐)."""
+    if requests is None:
+        return None
+    for path in ("index/VKOSPI/basic", "index/.VKOSPI/basic"):
+        try:
+            r = requests.get(f"https://api.stock.naver.com/{path}", headers=HEAD, timeout=8).json()
+            v = _f(r.get("closePrice") or r.get("nowVal") or r.get("closePriceRaw"))
+            if v > 0:
+                return v
+        except Exception:
+            continue
+    return None
 
 
 def fetch_overnight() -> dict[str, float]:
