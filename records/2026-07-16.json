@@ -29,5 +29,19 @@
     "inst": -14457
   },
   "pred_close": 6790,
-  "close_regime": "gap실패+매도(하방 드리프트)"
+  "close_regime": "gap실패+매도(하방 드리프트)",
+  "actual_open": 6960.5,
+  "actual_close": 6820.6,
+  "open_score": {
+    "score": 0,
+    "error_pct": 3.714,
+    "pred": 7219,
+    "actual": 6960.5
+  },
+  "close_score": {
+    "score": 4,
+    "error_pct": 0.449,
+    "pred": 6790,
+    "actual": 6820.6
+  }
 }
