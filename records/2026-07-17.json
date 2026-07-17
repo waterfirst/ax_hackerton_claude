@@ -27,5 +27,15 @@
     "winsor": 3.0,
     "crisis": false,
     "day_count": 0
-  }
+  },
+  "intraday": {
+    "open": 0.0,
+    "current": 6820.6,
+    "high": 0.0,
+    "low": 0.0,
+    "foreign": -13665,
+    "inst": -23831
+  },
+  "pred_close": 8526,
+  "close_regime": "고변동 드리프트(현재가 앵커 폐지)"
 }
