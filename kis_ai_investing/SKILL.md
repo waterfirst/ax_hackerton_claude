@@ -139,6 +139,31 @@ AI는 매일 아래 질문에 답해야 한다.
 
 ---
 
+## KIS API 기술 레퍼런스 (반복실수 방지 · 검증됨 2026-07-18)
+
+**주문/조회 TR_ID (모의 = V로 시작, 실전 = T로 시작):**
+| 기능 | 엔드포인트 | 모의 TR | 실전 TR |
+|---|---|---|---|
+| 현금 매수주문 | `/uapi/domestic-stock/v1/trading/order-cash` | **VTTC0802U** | TTTC0802U |
+| 현금 매도주문 | `/uapi/domestic-stock/v1/trading/order-cash` | **VTTC0801U** | TTTC0801U |
+| 주식잔고조회 | `/uapi/domestic-stock/v1/trading/inquire-balance` | VTTC8434R | TTTC8434R |
+| 매수가능조회 | `/uapi/domestic-stock/v1/trading/inquire-psbl-order` | VTTC8908R | TTTC8908R |
+| 일별체결조회 | `/uapi/domestic-stock/v1/trading/inquire-daily-ccld` | VTTC0081R | TTTC8001R |
+| 현재가조회 | `/uapi/domestic-stock/v1/quotations/inquire-price` | FHKST01010100 | FHKST01010100 |
+
+- ⚠️ **틀린 값 주의**: 매수 `VTTC0012U`·매도 `VTTC0011U`는 **오류**(구/오기). 반드시 `VTTC0802U/0801U`.
+- 현재가조회: `FID_COND_MRKT_DIV_CODE=J`, `FID_INPUT_ISCD=<종목코드>` → `output.stck_prpr`(현재가), `trht_yn`(거래정지).
+- **성공판정 = `rt_cd == "0"`**(문자열). 그 외는 실패로 간주(폴백/관망).
+- **토큰 발급 1분당 1회 제한** → 파일 캐시 필수(만료 전 재사용).
+- **가짜 시세 금지**: 주문가는 반드시 주문 직전 실시간 현재가 기반(±0.3% 지정가). 고정값(예 10000) 주문은 체결불가/쓰레기.
+- 모의 체결 = 실제 시장서 그 가격 체결조건 충족 시에만. 평일 08~18, 지정가 전략 현실적.
+
+## AI 검증수칙 (Codex/보조AI 산출물 신뢰 금지)
+- "완료/등록완료" 보고는 **독립 확인 후에만 인정**: 크론=`crontab -l`, push=`git branch -r --contains`, 테스트=직접 재실행, 키누수=직접 grep.
+- 실주문 안전잠금(`--dry-run`) 해제는 **사람/감독AI 검수 후에만.**
+
+---
+
 ## 한 줄 요약
 
 이 스킬의 목적은  
