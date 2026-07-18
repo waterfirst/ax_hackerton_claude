@@ -1,4 +1,13 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
+
+# logs
 records/cron.log
+
+# KIS 키/토큰 (절대 커밋 금지)
+kis_devlp.yaml
+.token*.json
+*.env
+.env

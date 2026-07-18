@@ -1,0 +1,38 @@
+# 한국투자증권 OpenAPI 설정 예시 (kis_devlp.yaml.example)
+# ------------------------------------------------------------
+# 사용법:
+#   1. 이 파일을 복사해서 실제 설정 파일로 만든다:
+#        cp kis_devlp.yaml.example ~/.KIS/config/kis_devlp.yaml
+#   2. 아래 <...> 부분을 본인 값으로 채운다.
+#   3. 이 .example 파일은 커밋해도 되지만,
+#      실제 kis_devlp.yaml 은 절대 커밋 금지 (.gitignore 에 추가).
+# ------------------------------------------------------------
+# ⚠️ 실제 파일에는 진짜 KEY/SECRET/계좌번호가 들어가므로:
+#   - Git 커밋 금지
+#   - 공개 업로드 금지
+#   - 로그/화면 출력 금지
+
+# ── 실전(운영) ─────────────────────────────
+my_app: "<REAL_APP_KEY>"          # 실전 APP KEY
+my_sec: "<REAL_APP_SECRET>"       # 실전 APP SECRET
+my_acct_stock: "<12345678>"       # 실전 종합계좌 앞 8자리
+my_acct_future: ""                # 선물옵션 계좌(없으면 빈칸)
+my_prod: "01"                     # 계좌상품코드 (국내주식 보통 01)
+
+# ── 모의(페이퍼) ────────────────────────────
+paper_app: "<PAPER_APP_KEY>"      # 모의 APP KEY
+paper_sec: "<PAPER_APP_SECRET>"   # 모의 APP SECRET
+my_paper_stock: "<50123456>"      # 모의 계좌 앞 8자리
+my_paper_future: ""
+
+# ── 기타 ───────────────────────────────────
+my_htsid: ""                      # HTS ID (선택)
+my_token: ""                      # 발급 토큰 캐시(비워두면 자동발급)
+
+# ── 도메인 (수정 불필요) ────────────────────
+prod: "https://openapi.koreainvestment.com:9443"       # 실전 REST
+vps:  "https://openapivts.koreainvestment.com:29443"    # 모의 REST
+ops:  "ws://ops.koreainvestment.com:21000"              # 실전 웹소켓
+vops: "ws://ops.koreainvestment.com:31000"              # 모의 웹소켓
+
+my_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"

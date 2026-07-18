@@ -1,0 +1,2 @@
+date,time,account,side,ticker,name,qty,price,order_type,amount,sleeve,confidence,signal,reason,status,fill_price,pnl,cum_pnl,note
+2026-07-20,09:05,MOCK,BUY,069500,KODEX200,10,,limit,,S1,medium,"diode 시가갭+레짐",예시행,PENDING,,,,파이프라인 검증용 예시
