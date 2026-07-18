@@ -1,0 +1,41 @@
+{
+  "updated_at": "2026-07-18 16:30 KST",
+  "status": "엔진 가동 전 · 첫 매매일 2026-07-20(월) 예정",
+  "regime": "crash_continuation",
+  "account": {
+    "type": "모의(paper)",
+    "number_masked": "50XXXXXX",
+    "total": 100000000,
+    "cash": 100000000,
+    "invested": 0,
+    "day_pnl": 0,
+    "cum_pnl": 0,
+    "cum_return_pct": 0.0,
+    "vs_kospi_pct": 0.0
+  },
+  "metrics": {
+    "mdd_pct": 0.0,
+    "win_rate": null,
+    "profit_factor": null,
+    "trades": 0,
+    "trading_days": 0
+  },
+  "sleeves": [
+    { "name": "S1 지수모델", "target_pct": 40, "used_pct": 0, "desc": "KODEX200 롱 / 인버스 숏" },
+    { "name": "S2 대형주", "target_pct": 30, "used_pct": 0, "desc": "삼성전자·SK하이닉스" },
+    { "name": "S3 현금", "target_pct": 30, "used_pct": 100, "desc": "드라이파우더" }
+  ],
+  "positions": [],
+  "trades": [],
+  "plan": {
+    "date": "2026-07-20",
+    "text": "붕괴장(crash_continuation)·고변동. 초기투입 30~40% 캡. S1 지수모델 위주, 하락 시 인버스 방어. 7/22~25 여행 UNATTENDED 대비 노출 축소."
+  },
+  "report": {
+    "date": "—",
+    "text": "첫 매매일 이후 자동 생성"
+  },
+  "equity_curve": [
+    { "date": "2026-07-18", "value": 100000000 }
+  ]
+}

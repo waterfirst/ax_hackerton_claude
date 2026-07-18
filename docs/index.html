@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KIS 모의투자 상황판 · AI 오케스트레이션</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#171b22; --panel2:#1e242e; --line:#2a313c;
+    --txt:#e6edf3; --mut:#8b95a3; --up:#e5484d; --down:#3b82f6; --acc:#4cc38a; --warn:#f5a623;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.2px}
+  .sub{color:var(--mut);font-size:12.5px;margin-top:4px}
+  .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:600;
+    background:rgba(245,166,35,.14);color:var(--warn);border:1px solid rgba(245,166,35,.3)}
+  .grid{display:grid;gap:12px}
+  .kpis{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px}
+  .card h2{font-size:12.5px;color:var(--mut);margin:0 0 10px;font-weight:600;letter-spacing:.2px}
+  .kpi .label{font-size:12px;color:var(--mut);margin-bottom:6px}
+  .kpi .val{font-size:22px;font-weight:680;letter-spacing:-.5px}
+  .kpi .val small{font-size:13px;color:var(--mut);font-weight:500}
+  .pos{color:var(--up)} .neg{color:var(--down)} .flat{color:var(--txt)}
+  .row2{grid-template-columns:1.4fr 1fr}
+  @media(max-width:720px){.row2{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:right;padding:7px 8px;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--mut);font-weight:600;font-size:11.5px}
+  .empty{color:var(--mut);font-size:13px;text-align:center;padding:22px 0}
+  .sleeve{margin-bottom:11px}
+  .sleeve .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+  .sleeve .desc{color:var(--mut);font-size:11.5px}
+  .bar{height:7px;background:var(--panel2);border-radius:6px;overflow:hidden;position:relative}
+  .bar i{display:block;height:100%;background:var(--acc);border-radius:6px}
+  .bar u{position:absolute;top:-2px;height:11px;width:2px;background:var(--mut)}
+  .plan{font-size:13.5px;line-height:1.6;color:#cdd6df}
+  .plan .d{color:var(--acc);font-weight:600;margin-right:6px}
+  footer{color:var(--mut);font-size:11.5px;margin-top:22px;line-height:1.7}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);margin-right:6px;vertical-align:middle}
+  .regime{font-size:12px;color:var(--warn);font-weight:600}
+  svg{display:block;width:100%;height:120px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>📊 KIS 모의투자 상황판</h1>
+      <div class="sub">KOSPI 다이오드 예측모델 × AI 오케스트레이션 · 3개월 실험(1억)</div>
+    </div>
+    <div style="text-align:right">
+      <span class="badge" id="statusBadge">로딩…</span>
+      <div class="sub" id="updated"></div>
+    </div>
+  </header>
+
+  <div class="grid kpis" id="kpis"></div>
+
+  <div class="grid row2" style="margin-top:12px">
+    <div class="card">
+      <h2>자산 추이 (Equity Curve)</h2>
+      <div id="chart"></div>
+    </div>
+    <div class="card">
+      <h2>슬리브 배분 <span class="regime" id="regime"></span></h2>
+      <div id="sleeves"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h2>보유 포지션</h2>
+    <div id="positions"></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h2>최근 매매 (이유 포함)</h2>
+    <div id="trades"></div>
+  </div>
+
+  <div class="grid row2" style="margin-top:12px">
+    <div class="card">
+      <h2>오늘 장전 계획</h2>
+      <div class="plan"><span class="d" id="planDate"></span><span id="planText"></span></div>
+    </div>
+    <div class="card">
+      <h2>장후 보고</h2>
+      <div class="plan"><span class="d" id="repDate"></span><span id="repText"></span></div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="dot"></span>이 대시보드는 <b>모의(가상)투자</b> 기록이며 투자자문이 아닙니다. 투자 책임은 본인에게 있습니다.<br>
+    데이터: <code>dashboard_data.json</code> (엔진이 매 장전/장후 자동 갱신) · 색상: <span class="pos">빨강=상승</span> / <span class="neg">파랑=하락</span>(한국식).
+  </footer>
+</div>
+
+<script>
+const won = n => (n==null?'—':n.toLocaleString('ko-KR')+'원');
+const pct = n => (n==null?'—':(n>0?'+':'')+n.toFixed(2)+'%');
+const cls = n => (n==null||n===0?'flat':(n>0?'pos':'neg'));
+
+fetch('dashboard_data.json?_='+Date.now()).then(r=>r.json()).then(d=>{
+  document.getElementById('statusBadge').textContent = d.status || '가동중';
+  document.getElementById('updated').textContent = '갱신: '+(d.updated_at||'—');
+  document.getElementById('regime').textContent = d.regime ? '· '+d.regime : '';
+
+  const a=d.account||{};
+  const kpis=[
+    ['총 평가금액', won(a.total), 'flat', a.type||''],
+    ['현금(예수금)', won(a.cash), 'flat', '투입 '+won(a.invested)],
+    ['누적 손익', won(a.cum_pnl), cls(a.cum_pnl), pct(a.cum_return_pct)],
+    ['vs 코스피', pct(a.vs_kospi_pct), cls(a.vs_kospi_pct), 'MDD '+((d.metrics||{}).mdd_pct??0).toFixed(1)+'%'],
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k=>`
+    <div class="card kpi"><div class="label">${k[0]}</div>
+    <div class="val ${k[2]}">${k[1]} <small>${k[3]||''}</small></div></div>`).join('');
+
+  // sleeves
+  document.getElementById('sleeves').innerHTML = (d.sleeves||[]).map(s=>`
+    <div class="sleeve">
+      <div class="top"><span>${s.name} <span class="desc">${s.desc||''}</span></span>
+        <span>${s.used_pct}% <span class="desc">/ 목표 ${s.target_pct}%</span></span></div>
+      <div class="bar"><i style="width:${Math.min(s.used_pct,100)}%"></i><u style="left:${Math.min(s.target_pct,100)}%"></u></div>
+    </div>`).join('');
+
+  // positions
+  const P=d.positions||[];
+  document.getElementById('positions').innerHTML = P.length? `<table>
+    <tr><th>종목</th><th>수량</th><th>평단</th><th>현재가</th><th>평가금</th><th>손익</th><th>수익률</th></tr>
+    ${P.map(p=>`<tr><td>${p.name}</td><td>${p.qty}</td><td>${won(p.avg)}</td><td>${won(p.price)}</td>
+      <td>${won(p.value)}</td><td class="${cls(p.pnl)}">${won(p.pnl)}</td>
+      <td class="${cls(p.pnl_pct)}">${pct(p.pnl_pct)}</td></tr>`).join('')}</table>`
+    : `<div class="empty">보유 종목 없음 (현금 100%)</div>`;
+
+  // trades
+  const T=d.trades||[];
+  document.getElementById('trades').innerHTML = T.length? `<table>
+    <tr><th>일시</th><th>구분</th><th>종목</th><th>수량</th><th>가격</th><th>이유</th><th>확신</th></tr>
+    ${T.slice(-12).reverse().map(t=>`<tr><td>${t.date} ${t.time||''}</td>
+      <td class="${t.side==='BUY'?'pos':'neg'}">${t.side==='BUY'?'매수':'매도'}</td>
+      <td>${t.name}</td><td>${t.qty}</td><td>${won(t.price)}</td>
+      <td style="text-align:left;color:#cdd6df">${t.reason||''}</td><td>${t.confidence||''}</td></tr>`).join('')}</table>`
+    : `<div class="empty">매매 기록 없음 (첫 매매일 2026-07-20 예정)</div>`;
+
+  // plan / report
+  document.getElementById('planDate').textContent=(d.plan||{}).date||'';
+  document.getElementById('planText').textContent=(d.plan||{}).text||'—';
+  document.getElementById('repDate').textContent=(d.report||{}).date||'';
+  document.getElementById('repText').textContent=(d.report||{}).text||'—';
+
+  // equity chart (SVG line)
+  const E=d.equity_curve||[]; const el=document.getElementById('chart');
+  if(E.length<2){ el.innerHTML=`<div class="empty">데이터 축적 전 — 매매 시작 후 그래프 표시</div>`; return; }
+  const W=600,H=120,pad=6;
+  const vals=E.map(p=>p.value), mn=Math.min(...vals), mx=Math.max(...vals), rng=(mx-mn)||1;
+  const pts=E.map((p,i)=>[pad+i*(W-2*pad)/(E.length-1), H-pad-(p.value-mn)/rng*(H-2*pad)]);
+  const path=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const last=E[E.length-1].value, first=E[0].value, up=last>=first;
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <path d="${path} L ${pts[pts.length-1][0]} ${H} L ${pts[0][0]} ${H} Z" fill="${up?'rgba(229,72,77,.12)':'rgba(59,130,246,.12)'}"/>
+    <path d="${path}" fill="none" stroke="${up?'#e5484d':'#3b82f6'}" stroke-width="2"/></svg>`;
+}).catch(e=>{
+  document.getElementById('statusBadge').textContent='데이터 로드 실패';
+  document.getElementById('kpis').innerHTML=`<div class="card"><div class="empty">dashboard_data.json 로드 실패: ${e}</div></div>`;
+});
+</script>
+</body>
+</html>
