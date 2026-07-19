@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-19 13:50 KST",
-  "status": "T3 plan non-trading-day",
+  "updated_at": "2026-07-20 07:05 KST",
+  "status": "T3 plan dry-run",
   "regime": "gap실패+매도(하방 드리프트)",
   "account": {
     "type": "모의(paper)",
@@ -54,12 +54,12 @@
     }
   ],
   "plan": {
-    "date": "2026-07-19",
-    "text": "short/strong · dry_run=True · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json · 휴장일"
+    "date": "2026-07-20",
+    "text": "short/strong · dry_run=True · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json"
   },
   "report": {
-    "date": "2026-07-19",
-    "text": "mode=plan · 휴장일 · selfcheck=ok"
+    "date": "2026-07-20",
+    "text": "mode=plan · trades=1 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json · selfcheck=ok"
   },
   "selfcheck": {
     "ok": true,
@@ -69,7 +69,7 @@
   },
   "equity_curve": [
     {
-      "date": "2026-07-19",
+      "date": "2026-07-20",
       "value": 100000000
     }
   ]
