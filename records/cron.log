@@ -655,3 +655,32 @@
   },
   "disclaimer": "정보·연구 목적. 투자자문 아님."
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "close",
+  "pred_close": 8526,
+  "regime": "drift",
+  "regime_kr": "고변동 드리프트(현재가 앵커 폐지)",
+  "flows": {
+    "foreign": -13665,
+    "inst": -23831,
+    "net": -37496
+  },
+  "model": "v9 close: 추세지속(자본이탈) 연장",
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-17.json",
+  "github": {
+    "push": "ok",
+    "commit": "2026-07-17 close",
+    "repo": "github.com/waterfirst/ax_hackerton_claude.git"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
+{
+  "mode": "score",
+  "skip": true,
+  "reason": "KRX 휴장일",
+  "date": "2026-07-17"
+}
