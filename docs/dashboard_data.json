@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-07-20 07:05 KST",
-  "status": "T3 plan dry-run",
+  "status": "T3 trade dry-run",
   "regime": "gap실패+매도(하방 드리프트)",
   "account": {
     "type": "모의(paper)",
@@ -17,7 +17,7 @@
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 1,
+    "trades": 2,
     "trading_days": 0
   },
   "sleeves": [
@@ -51,15 +51,25 @@
       "qty": "0",
       "weight": "0.15",
       "issues": "order_value_limit"
+    },
+    {
+      "ts": "2026-07-20T07:05:03",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.7",
+      "issues": "order_value_limit|weight_limit"
     }
   ],
   "plan": {
     "date": "2026-07-20",
-    "text": "short/strong · dry_run=True · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json"
+    "text": "short/strong · dry_run=True · quote=live · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json"
   },
   "report": {
     "date": "2026-07-20",
-    "text": "mode=plan · trades=1 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json · selfcheck=ok"
+    "text": "mode=trade · trades=2 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-16.json · selfcheck=ok"
   },
   "selfcheck": {
     "ok": true,
