@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-20 21:02 KST",
-  "status": "T3 plan dry-run",
+  "updated_at": "2026-07-21 08:40 KST",
+  "status": "T3 plan live-paper",
   "regime": "고변동 드리프트(현재가 앵커 폐지)",
   "account": {
     "type": "모의(paper)",
@@ -95,11 +95,11 @@
     }
   ],
   "plan": {
-    "date": "2026-07-20",
-    "text": "short/strong · dry_run=True · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json"
+    "date": "2026-07-21",
+    "text": "short/strong · dry_run=False · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json"
   },
   "report": {
-    "date": "2026-07-20",
+    "date": "2026-07-21",
     "text": "mode=plan · trades=4 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json · selfcheck=ok"
   },
   "selfcheck": {
@@ -110,7 +110,7 @@
   },
   "equity_curve": [
     {
-      "date": "2026-07-20",
+      "date": "2026-07-21",
       "value": 99999950
     }
   ]
