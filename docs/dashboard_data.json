@@ -1,23 +1,23 @@
 {
-  "updated_at": "2026-07-20 13:01 KST",
+  "updated_at": "2026-07-20 13:02 KST",
   "status": "T3 report dry-run",
   "regime": "고변동 드리프트(현재가 앵커 폐지)",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 100000515,
+    "total": 100000355,
     "cash": 100000000,
-    "invested": 104660,
+    "invested": 104500,
     "day_pnl": 0,
-    "cum_pnl": 525,
-    "cum_return_pct": 0.0005,
+    "cum_pnl": 365,
+    "cum_return_pct": 0.0004,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 3,
+    "trades": 4,
     "trading_days": 0
   },
   "sleeves": [
@@ -46,10 +46,10 @@
       "name": "KODEX 200",
       "qty": 1,
       "avg_price": 104135,
-      "price": 104660,
-      "value": 104660,
-      "pnl": 525,
-      "pnl_pct": 0.5
+      "price": 104500,
+      "value": 104500,
+      "pnl": 365,
+      "pnl_pct": 0.35
     }
   ],
   "trades": [
@@ -82,6 +82,16 @@
       "qty": "0",
       "weight": "0.7",
       "issues": ""
+    },
+    {
+      "ts": "2026-07-20T09:02:06",
+      "action": "buy",
+      "sleeve": "index_etf",
+      "symbol": "069500",
+      "price": "104135",
+      "qty": "1",
+      "weight": "0.0010",
+      "issues": "plumbing_test"
     }
   ],
   "plan": {
@@ -90,7 +100,7 @@
   },
   "report": {
     "date": "2026-07-20",
-    "text": "mode=report · trades=3 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json · selfcheck=ok"
+    "text": "mode=report · trades=4 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json · selfcheck=ok"
   },
   "selfcheck": {
     "ok": true,
@@ -101,7 +111,7 @@
   "equity_curve": [
     {
       "date": "2026-07-20",
-      "value": 100000515
+      "value": 100000355
     }
   ]
 }
