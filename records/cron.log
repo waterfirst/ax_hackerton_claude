@@ -684,3 +684,29 @@
   "reason": "KRX 휴장일",
   "date": "2026-07-17"
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "open",
+  "pred_open": 6810,
+  "gap_pct": -0.15,
+  "prev_close": 6820.6,
+  "reasons": [
+    "T_EWY(v8): 0.3×EWY_w(-0.50%; raw -0.50)=-0.15%"
+  ],
+  "model": "v8-adaptive T_EWY(k=0.3,winsor±3.0) + 휴장/서사 보정",
+  "adaptive": {
+    "k": 0.3,
+    "winsor": 3.0,
+    "crisis": false,
+    "day_count": 0
+  },
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-20.json",
+  "github": {
+    "push": "fail",
+    "reason": "To https://github.com/waterfirst/ax_hackerton_claude.git\n ! [rejected]        HEAD -> main (fetch first)\nerror: failed to push some refs to 'https://github.com/waterfirst/ax_hackerton_claude.git'\nhint"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
