@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-07-20 12:39 KST",
+  "updated_at": "2026-07-20 13:01 KST",
   "status": "T3 report dry-run",
   "regime": "고변동 드리프트(현재가 앵커 폐지)",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 99999980,
+    "total": 100000515,
     "cash": 100000000,
-    "invested": 104125,
+    "invested": 104660,
     "day_pnl": 0,
-    "cum_pnl": -10,
-    "cum_return_pct": -0.0,
+    "cum_pnl": 525,
+    "cum_return_pct": 0.0005,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
@@ -46,10 +46,10 @@
       "name": "KODEX 200",
       "qty": 1,
       "avg_price": 104135,
-      "price": 104125,
-      "value": 104125,
-      "pnl": -10,
-      "pnl_pct": -0.01
+      "price": 104660,
+      "value": 104660,
+      "pnl": 525,
+      "pnl_pct": 0.5
     }
   ],
   "trades": [
@@ -101,7 +101,7 @@
   "equity_curve": [
     {
       "date": "2026-07-20",
-      "value": 99999980
+      "value": 100000515
     }
   ]
 }
