@@ -108,6 +108,18 @@ def test_sox_colead_blend():
     assert off["gap_pct"] == base["gap_pct"]
 
 
+def test_vkospi_none_proxy_crisis():
+    """VKOSPI None이어도 프록시(EWY 절대값/전일급등) 충족 시 위기레짐을 탄다."""
+    base = core.predict_open(prev_close=8000, ewy_overnight=-1.0, prev_kospi_ret=4.5,
+                             vkospi=None, params=core.adaptive.DEFAULTS)
+    calm = core.predict_open(prev_close=8000, ewy_overnight=-2.9, prev_kospi_ret=3.9,
+                             vkospi=None, params=core.adaptive.DEFAULTS)
+    assert base["adaptive"]["crisis"] is True
+    assert "위기" in base["model"]
+    assert abs(base["gap_pct"] - (-0.8)) < 0.01   # CRISIS_K 0.8 × -1.0
+    assert calm["adaptive"]["crisis"] is False
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):

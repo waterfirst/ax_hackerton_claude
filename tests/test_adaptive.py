@@ -69,6 +69,21 @@ def test_convergence_direction_crisis():
         assert out["gap_pct"] < base["gap_pct"]      # 더 강한 갭다운 예측
 
 
+def test_proxy_crisis_uses_adaptive_crisis_params_without_vkospi():
+    """VKOSPI None이어도 프록시 충족이면 adaptive의 위기계수를 사용한다."""
+    with tempfile.TemporaryDirectory() as tmp:
+        _isolate(tmp)
+        p = adaptive.load_params()
+        p["CRISIS_K"] = 1.0
+        p["CRISIS_WINSOR"] = 5.0
+        with open(adaptive.PARAMS_PATH, "w", encoding="utf-8") as f:
+            json.dump(p, f, ensure_ascii=False)
+        out = core.predict_open(prev_close=8000, ewy_overnight=-1.5,
+                                prev_kospi_ret=4.2, vkospi=None)
+        assert out["adaptive"]["crisis"] is True
+        assert abs(out["gap_pct"] - (-1.5)) < 0.01  # CRISIS_K 1.0 × -1.5
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):

@@ -89,9 +89,17 @@ def predict_open(
     gap = k x EWY  (× 휴장 디스카운트)  (+ 잔차)  (+ SOX)  (± 서사)  (+ 블로우오프되돌림)
     - k, winsor 는 adaptive.load_params()가 매일 자기수정한 값(상태파일 없으면 v8 기본).
     - VKOSPI>=THR 위기레짐이면 CRISIS_K/CRISIS_WINSOR 사용 + 전일급등 되돌림 감산.
+      VKOSPI가 None이고 전일 KOSPI 수익률이 들어온 경우엔 프록시(EWY +3%↑ 또는 전일 KOSPI +4%↑)
+      로 위기레짐을 보강.
     """
     ap = params if params is not None else adaptive.load_params()
-    crisis = vkospi is not None and vkospi >= ap.get("VKOSPI_CRISIS_THR", 40.0)
+    # 위기레짐 감지는 방향 무관(폭락/급등 모두 고변동) → abs. (블로우오프 되돌림 119는 상승전용 유지)
+    proxy_crisis = vkospi is None and prev_kospi_ret is not None and (
+        abs(ewy_overnight) >= 3.0 or
+        abs(prev_kospi_ret) >= 4.0
+    )
+    crisis = ((vkospi is not None and vkospi >= ap.get("VKOSPI_CRISIS_THR", 40.0))
+              or proxy_crisis)
     if crisis:
         k = ap.get("CRISIS_K", 0.80)
         winsor = ap.get("CRISIS_WINSOR", 6.0)
@@ -103,6 +111,8 @@ def predict_open(
     gap = k * ewy_w
     tag = "v8/위기" if crisis else "v8"
     reasons = [f"T_EWY({tag}): {round(k, 3)}×EWY_w({ewy_w:+.2f}%; raw {ewy_overnight:+.2f})={gap:+.2f}%"]
+    if proxy_crisis:
+        reasons.append("위기프록시: VKOSPI None, |EWY|≥3% 또는 |전일 KOSPI|≥4% (방향무관 고변동)")
 
     # 위기레짐 블로우오프 되돌림: 전일 KOSPI 급등(+4%↑) 다음날은 프리미엄을 시가에서 반납.
     # (7/16 교훈: 전일 +6.24% 다음날 시가 -4.45% 갭다운. BLOWOFF_COEF는 자기수정으로 학습.)
