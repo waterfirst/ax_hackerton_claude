@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-20 08:45 KST",
-  "status": "T3 plan dry-run · selfcheck-blocked",
+  "updated_at": "2026-07-20 09:01 KST",
+  "status": "T3 trade dry-run · selfcheck-blocked",
   "regime": "hold:no_record",
   "account": {
     "type": "모의(paper)",
@@ -17,7 +17,7 @@
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 2,
+    "trades": 3,
     "trading_days": 0
   },
   "sleeves": [
@@ -61,15 +61,25 @@
       "qty": "0",
       "weight": "0.7",
       "issues": "order_value_limit|weight_limit"
+    },
+    {
+      "ts": "2026-07-20T09:01:02",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.7",
+      "issues": ""
     }
   ],
   "plan": {
     "date": "2026-07-20",
-    "text": "flat/weak · dry_run=True · quote=10000 · signal=hold:no_record"
+    "text": "flat/weak · dry_run=True · quote=live · signal=hold:no_record"
   },
   "report": {
     "date": "2026-07-20",
-    "text": "mode=plan · trades=2 · signal=hold:no_record · selfcheck=blocked"
+    "text": "mode=trade · trades=3 · signal=hold:no_record · selfcheck=blocked"
   },
   "selfcheck": {
     "ok": false,
