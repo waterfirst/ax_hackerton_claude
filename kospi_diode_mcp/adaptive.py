@@ -26,7 +26,7 @@ DEFAULTS: dict[str, Any] = {
     "K_EWY": 0.30,
     "EWY_WINSOR": 3.0,
     "BLOWOFF_COEF": 0.0,     # 전일급등 되돌림 감산계수(위기레짐 전용). 0=미적용
-    "CRISIS_K": 0.80,        # VKOSPI>=THR 위기레짐 EWY 계수
+    "CRISIS_K": 0.50,        # 위기레짐 EWY 계수 (2026-07-20 백테스트: 0.80은 나이브 무승부·오버슛 → 0.50이 41일 MAE 최선, 클램프 하한)
     "CRISIS_WINSOR": 6.0,
     "VKOSPI_CRISIS_THR": 40.0,
     "day_count": 0,

@@ -2,7 +2,7 @@
   "K_EWY": 0.32439961293727826,
   "EWY_WINSOR": 3.0,
   "BLOWOFF_COEF": 0.0,
-  "CRISIS_K": 0.8,
+  "CRISIS_K": 0.5,
   "CRISIS_WINSOR": 6.0,
   "VKOSPI_CRISIS_THR": 40.0,
   "day_count": 1,

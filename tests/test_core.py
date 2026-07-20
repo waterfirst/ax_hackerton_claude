@@ -116,7 +116,7 @@ def test_vkospi_none_proxy_crisis():
                              vkospi=None, params=core.adaptive.DEFAULTS)
     assert base["adaptive"]["crisis"] is True
     assert "위기" in base["model"]
-    assert abs(base["gap_pct"] - (-0.8)) < 0.01   # CRISIS_K 0.8 × -1.0
+    assert abs(base["gap_pct"] - (-0.5)) < 0.01   # CRISIS_K 0.50 × -1.0 (2026-07-20 백테스트 재보정)
     assert calm["adaptive"]["crisis"] is False
 
 
