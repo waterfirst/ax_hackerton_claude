@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="dashboard-version" content="2026-07-20-1002" />
 <title>KIS 모의투자 상황판 · AI 오케스트레이션</title>
 <style>
   :root{
@@ -135,19 +136,31 @@ fetch('dashboard_data.json?_='+Date.now()).then(r=>r.json()).then(d=>{
   const P=d.positions||[];
   document.getElementById('positions').innerHTML = P.length? `<table>
     <tr><th>종목</th><th>수량</th><th>평단</th><th>현재가</th><th>평가금</th><th>손익</th><th>수익률</th></tr>
-    ${P.map(p=>`<tr><td>${p.name}</td><td>${p.qty}</td><td>${won(p.avg)}</td><td>${won(p.price)}</td>
+    ${P.map(p=>`<tr><td>${p.name||p.symbol||''}</td><td>${p.qty??''}</td><td>${won(p.avg ?? p.avg_price)}</td><td>${won(p.price)}</td>
       <td>${won(p.value)}</td><td class="${cls(p.pnl)}">${won(p.pnl)}</td>
       <td class="${cls(p.pnl_pct)}">${pct(p.pnl_pct)}</td></tr>`).join('')}</table>`
     : `<div class="empty">보유 종목 없음 (현금 100%)</div>`;
 
   // trades
   const T=d.trades||[];
+  const tradeLabel = t => {
+    if (t.side) return t.side === 'BUY' ? '매수' : '매도';
+    if (t.action === 'buy') return '매수';
+    if (t.action === 'sell') return '매도';
+    return '대기';
+  };
+  const tradeClass = t => {
+    if (t.side === 'BUY' || t.action === 'buy') return 'pos';
+    if (t.side === 'SELL' || t.action === 'sell') return 'neg';
+    return 'flat';
+  };
+  const tradeReason = t => t.reason || t.issues || '';
   document.getElementById('trades').innerHTML = T.length? `<table>
     <tr><th>일시</th><th>구분</th><th>종목</th><th>수량</th><th>가격</th><th>이유</th><th>확신</th></tr>
-    ${T.slice(-12).reverse().map(t=>`<tr><td>${t.date} ${t.time||''}</td>
-      <td class="${t.side==='BUY'?'pos':'neg'}">${t.side==='BUY'?'매수':'매도'}</td>
-      <td>${t.name}</td><td>${t.qty}</td><td>${won(t.price)}</td>
-      <td style="text-align:left;color:#cdd6df">${t.reason||''}</td><td>${t.confidence||''}</td></tr>`).join('')}</table>`
+    ${T.slice(-12).reverse().map(t=>`<tr><td>${t.date || t.ts || ''} ${t.time||''}</td>
+      <td class="${tradeClass(t)}">${tradeLabel(t)}</td>
+      <td>${t.name || t.symbol || ''}</td><td>${t.qty ?? ''}</td><td>${won(Number(t.price)||0)}</td>
+      <td style="text-align:left;color:#cdd6df">${tradeReason(t)}</td><td>${t.confidence||t.weight||''}</td></tr>`).join('')}</table>`
     : `<div class="empty">매매 기록 없음 (첫 매매일 2026-07-20 예정)</div>`;
 
   // plan / report
