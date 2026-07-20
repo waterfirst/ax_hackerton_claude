@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-07-20 09:01 KST",
-  "status": "T3 trade dry-run · selfcheck-blocked",
+  "updated_at": "2026-07-20 09:55 KST",
+  "status": "T3 report dry-run · selfcheck-blocked",
   "regime": "hold:no_record",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 100000000,
+    "total": 100002885,
     "cash": 100000000,
-    "invested": 0,
+    "invested": 107030,
     "day_pnl": 0,
-    "cum_pnl": 0,
-    "cum_return_pct": 0.0,
+    "cum_pnl": 2895,
+    "cum_return_pct": 0.0029,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
@@ -24,7 +24,7 @@
     {
       "name": "S1 지수모델",
       "target_pct": 40,
-      "used_pct": 0,
+      "used_pct": 15,
       "desc": "KODEX200 롱 / 인버스 숏"
     },
     {
@@ -40,7 +40,18 @@
       "desc": "드라이파우더"
     }
   ],
-  "positions": [],
+  "positions": [
+    {
+      "symbol": "069500",
+      "name": "KODEX 200",
+      "qty": 1,
+      "avg_price": 104135,
+      "price": 107080,
+      "value": 107080,
+      "pnl": 2945,
+      "pnl_pct": 2.83
+    }
+  ],
   "trades": [
     {
       "ts": "2026-07-18T17:38:29",
@@ -75,11 +86,11 @@
   ],
   "plan": {
     "date": "2026-07-20",
-    "text": "flat/weak · dry_run=True · quote=live · signal=hold:no_record"
+    "text": "flat/weak · dry_run=True · quote=10000 · signal=hold:no_record"
   },
   "report": {
     "date": "2026-07-20",
-    "text": "mode=trade · trades=3 · signal=hold:no_record · selfcheck=blocked"
+    "text": "mode=report · trades=3 · signal=hold:no_record · selfcheck=blocked"
   },
   "selfcheck": {
     "ok": false,
@@ -92,7 +103,7 @@
   "equity_curve": [
     {
       "date": "2026-07-20",
-      "value": 100000000
+      "value": 100002885
     }
   ]
 }
