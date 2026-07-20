@@ -710,3 +710,25 @@
   },
   "disclaimer": "정보·연구 목적. 투자자문 아님."
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "close",
+  "pred_close": 6492,
+  "regime": "drift",
+  "regime_kr": "고변동 드리프트(현재가 앵커 폐지)",
+  "flows": {
+    "foreign": 3145,
+    "inst": -1611,
+    "net": 1534
+  },
+  "model": "v9 close: 추세지속(자본이탈) 연장",
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-20.json",
+  "github": {
+    "push": "fail",
+    "reason": "To https://github.com/waterfirst/ax_hackerton_claude.git\n ! [rejected]        HEAD -> main (fetch first)\nerror: failed to push some refs to 'https://github.com/waterfirst/ax_hackerton_claude.git'\nhint"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}

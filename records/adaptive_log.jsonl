@@ -1,0 +1,1 @@
+{"date": "2026-07-20", "day_count": 1, "err_gap_pct": -2.44, "crisis": false, "lr": 0.05, "before": {"K_EWY": 0.3, "EWY_WINSOR": 3.0, "BLOWOFF_COEF": 0.0, "CRISIS_K": 0.8, "CRISIS_WINSOR": 6.0}, "after": {"K_EWY": 0.3244, "EWY_WINSOR": 3.0, "BLOWOFF_COEF": 0.0, "CRISIS_K": 0.8, "CRISIS_WINSOR": 6.0}, "reasons": ["K_EWY: gradEMA +0.4880, lr 0.0500 → 0.3244"]}
