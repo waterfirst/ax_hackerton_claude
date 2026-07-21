@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-21 16:40 KST",
-  "status": "T3 report dry-run · selfcheck-blocked",
-  "regime": "상방추세 지속(고가밀착·매수, 연장 0.26)",
+  "updated_at": "2026-07-21 16:41 KST",
+  "status": "T3 report dry-run",
+  "regime": "crash_continuation",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
@@ -116,19 +116,17 @@
   ],
   "plan": {
     "date": "2026-07-21",
-    "text": "flat/weak · dry_run=True · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-21.json"
+    "text": "flat/weak · dry_run=True · quote=10000 · signal=cli"
   },
   "report": {
     "date": "2026-07-21",
-    "text": "mode=report · trades=6 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-21.json · selfcheck=blocked"
+    "text": "mode=report · trades=6 · signal=cli · selfcheck=ok"
   },
   "selfcheck": {
-    "ok": false,
-    "badge": "BLOCKED",
-    "action": "force_dry_run_trix_block",
-    "findings": [
-      "trix_bearish_conflict"
-    ]
+    "ok": true,
+    "badge": "OK",
+    "action": "allow",
+    "findings": []
   },
   "equity_curve": [
     {
