@@ -38,5 +38,41 @@
     "inst": 11626
   },
   "pred_close": 6824,
-  "close_regime": "상방추세 지속(고가밀착·매수, 연장 0.26)"
+  "close_regime": "상방추세 지속(고가밀착·매수, 연장 0.26)",
+  "actual_open": 6553.88,
+  "actual_close": 6747.95,
+  "open_score": {
+    "score": 4,
+    "error_pct": 0.471,
+    "pred": 6523,
+    "actual": 6553.88
+  },
+  "adaptive_learn": {
+    "date": "2026-07-21",
+    "day_count": 2,
+    "err_gap_pct": 0.474,
+    "crisis": false,
+    "lr": 0.0495,
+    "before": {
+      "K_EWY": 0.3244,
+      "EWY_WINSOR": 3.0,
+      "BLOWOFF_COEF": 0.0,
+      "CRISIS_K": 0.5,
+      "CRISIS_WINSOR": 6.0
+    },
+    "after": {
+      "K_EWY": 0.3244,
+      "EWY_WINSOR": 3.0,
+      "BLOWOFF_COEF": 0.0,
+      "CRISIS_K": 0.5,
+      "CRISIS_WINSOR": 6.0
+    },
+    "reasons": []
+  },
+  "close_score": {
+    "score": 1,
+    "error_pct": 1.127,
+    "pred": 6824,
+    "actual": 6747.95
+  }
 }

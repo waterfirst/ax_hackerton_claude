@@ -4,11 +4,6 @@
   "BLOWOFF_COEF": 0.0,
   "CRISIS_K": 0.5,
   "CRISIS_WINSOR": 6.0,
-  "VKOSPI_CRISIS_THR": 40.0,
   "day_count": 2,
-  "grad_ema": {
-    "K_EWY": 0.4879922587455651,
-    "CRISIS_K": 0.0,
-    "BLOWOFF_COEF": 0.0
-  }
+  "date": "2026-07-21"
 }
