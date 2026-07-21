@@ -28,5 +28,15 @@
     "winsor": 6.0,
     "crisis": true,
     "day_count": 1
-  }
+  },
+  "intraday": {
+    "open": 6553.88,
+    "current": 6768.89,
+    "high": 6784.1,
+    "low": 6429.03,
+    "foreign": 1600,
+    "inst": 11626
+  },
+  "pred_close": 6824,
+  "close_regime": "상방추세 지속(고가밀착·매수, 연장 0.26)"
 }

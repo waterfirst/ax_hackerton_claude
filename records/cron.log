@@ -783,3 +783,30 @@
   },
   "disclaimer": "정보·연구 목적. 투자자문 아님."
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "open",
+  "pred_open": 6523,
+  "gap_pct": 0.1,
+  "prev_close": 6516.27,
+  "reasons": [
+    "T_EWY(v8/위기): 0.5×EWY_w(+0.20%; raw +0.20)=+0.10%",
+    "위기프록시: VKOSPI None, |EWY|≥3% 또는 |전일 KOSPI|≥4% (방향무관 고변동)"
+  ],
+  "model": "v8-adaptive T_EWY(k=0.5,winsor±6.0,위기) + 휴장/서사 보정",
+  "adaptive": {
+    "k": 0.5,
+    "winsor": 6.0,
+    "crisis": true,
+    "day_count": 1
+  },
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-21.json",
+  "github": {
+    "push": "fail",
+    "reason": "To https://github.com/waterfirst/ax_hackerton_claude.git\n ! [rejected]        HEAD -> main (non-fast-forward)\nerror: failed to push some refs to 'https://github.com/waterfirst/ax_hackerton_claude.git'"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
