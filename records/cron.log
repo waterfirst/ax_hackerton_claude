@@ -832,3 +832,53 @@
   },
   "disclaimer": "정보·연구 목적. 투자자문 아님."
 }
+{
+  "header": "🔷 [CLAUDE · KOSPI 다이오드]",
+  "mode": "score",
+  "actual_open": 6553.88,
+  "actual_close": 6747.95,
+  "open_score": {
+    "score": 4,
+    "error_pct": 0.471,
+    "pred": 6523,
+    "actual": 6553.88
+  },
+  "adaptive_learn": {
+    "date": "2026-07-21",
+    "day_count": 2,
+    "err_gap_pct": 0.474,
+    "crisis": false,
+    "lr": 0.0495,
+    "before": {
+      "K_EWY": 0.3244,
+      "EWY_WINSOR": 3.0,
+      "BLOWOFF_COEF": 0.0,
+      "CRISIS_K": 0.5,
+      "CRISIS_WINSOR": 6.0
+    },
+    "after": {
+      "K_EWY": 0.3244,
+      "EWY_WINSOR": 3.0,
+      "BLOWOFF_COEF": 0.0,
+      "CRISIS_K": 0.5,
+      "CRISIS_WINSOR": 6.0
+    },
+    "reasons": []
+  },
+  "close_score": {
+    "score": 1,
+    "error_pct": 1.127,
+    "pred": 6824,
+    "actual": 6747.95
+  },
+  "file": "/home/waterfirst/kospi_diode_claude/records/2026-07-21.json",
+  "github": {
+    "push": "ok",
+    "commit": "2026-07-21 score",
+    "repo": "github.com/waterfirst/ax_hackerton_claude.git"
+  },
+  "telegram": {
+    "telegram": "ok"
+  },
+  "disclaimer": "정보·연구 목적. 투자자문 아님."
+}
