@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-07-21 10:35 KST",
-  "status": "T3 report dry-run",
-  "regime": "crash_continuation",
+  "updated_at": "2026-07-21 16:40 KST",
+  "status": "T3 report dry-run · selfcheck-blocked",
+  "regime": "상방추세 지속(고가밀착·매수, 연장 0.26)",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 100003490,
+    "total": 100003995,
     "cash": 100000000,
-    "invested": 107635,
+    "invested": 108140,
     "day_pnl": 0,
-    "cum_pnl": 3500,
-    "cum_return_pct": 0.0035,
+    "cum_pnl": 4005,
+    "cum_return_pct": 0.004,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
@@ -46,10 +46,10 @@
       "name": "KODEX 200",
       "qty": 1,
       "avg_price": 104135,
-      "price": 107635,
-      "value": 107635,
-      "pnl": 3500,
-      "pnl_pct": 3.36
+      "price": 108140,
+      "value": 108140,
+      "pnl": 4005,
+      "pnl_pct": 3.85
     }
   ],
   "trades": [
@@ -116,22 +116,24 @@
   ],
   "plan": {
     "date": "2026-07-21",
-    "text": "flat/weak · dry_run=True · quote=10000 · signal=cli"
+    "text": "flat/weak · dry_run=True · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-21.json"
   },
   "report": {
     "date": "2026-07-21",
-    "text": "mode=report · trades=6 · signal=cli · selfcheck=ok"
+    "text": "mode=report · trades=6 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-21.json · selfcheck=blocked"
   },
   "selfcheck": {
-    "ok": true,
-    "badge": "OK",
-    "action": "allow",
-    "findings": []
+    "ok": false,
+    "badge": "BLOCKED",
+    "action": "force_dry_run_trix_block",
+    "findings": [
+      "trix_bearish_conflict"
+    ]
   },
   "equity_curve": [
     {
       "date": "2026-07-21",
-      "value": 100003490
+      "value": 100003995
     }
   ]
 }
