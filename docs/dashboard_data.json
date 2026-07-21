@@ -1,7 +1,7 @@
 {
   "updated_at": "2026-07-21 09:01 KST",
   "status": "T3 trade dry-run",
-  "regime": "고변동 드리프트(현재가 앵커 폐지)",
+  "regime": "crash_continuation",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
@@ -17,7 +17,7 @@
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 5,
+    "trades": 6,
     "trading_days": 0
   },
   "sleeves": [
@@ -91,15 +91,25 @@
       "qty": "0",
       "weight": "0.7",
       "issues": "order_value_limit|weight_limit"
+    },
+    {
+      "ts": "2026-07-21T09:01:51",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.7",
+      "issues": ""
     }
   ],
   "plan": {
     "date": "2026-07-21",
-    "text": "short/strong · dry_run=True · quote=live · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json"
+    "text": "flat/weak · dry_run=True · quote=live · signal=cli"
   },
   "report": {
     "date": "2026-07-21",
-    "text": "mode=trade · trades=5 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-20.json · selfcheck=ok"
+    "text": "mode=trade · trades=6 · signal=cli · selfcheck=ok"
   },
   "selfcheck": {
     "ok": true,
