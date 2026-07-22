@@ -222,11 +222,38 @@ def do_score() -> dict:
 
 MODES = {"open": do_open, "close": do_close, "score": do_score}
 
+
+def _is_trading_day(day: str | None = None) -> tuple[bool, str]:
+    """주말/KRX 휴장일이면 (False, 사유). 휴장일 목록: records/krx_holidays.txt."""
+    day = day or TODAY
+    d = datetime.date.fromisoformat(day)
+    if d.weekday() >= 5:
+        return False, "주말"
+    hol = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "records", "krx_holidays.txt")
+    try:
+        with open(hol, encoding="utf-8") as f:
+            for line in f:
+                code = line.split("#", 1)[0].strip()
+                if code == day:
+                    return False, "KRX 휴장일"
+    except FileNotFoundError:
+        pass
+    return True, ""
+
+
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "show"
     if mode == "show":
         print(json.dumps(load(), ensure_ascii=False, indent=2))
     elif mode in MODES:
+        ok, why = _is_trading_day()
+        if not ok:
+            if mode == "open":
+                send_telegram(f"🔷 [CLAUDE · KOSPI] {TODAY}\n⏸️ {why} — 시가/종가 예측 skip")
+            print(json.dumps({"mode": mode, "skip": True, "reason": why,
+                              "date": TODAY}, ensure_ascii=False, indent=2))
+            sys.exit(0)
         try:
             result = MODES[mode]()
             result = {"header": HEADER, **result}
