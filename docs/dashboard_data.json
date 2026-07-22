@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-22 09:01 KST",
-  "status": "T3 trade dry-run · selfcheck-blocked · snapshot-fallback",
-  "regime": "상방추세 지속(고가밀착·매수, 연장 0.26)",
+  "updated_at": "2026-07-22 09:02 KST",
+  "status": "T3 trade dry-run · snapshot-fallback",
+  "regime": "crash_continuation",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
@@ -17,7 +17,7 @@
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 7,
+    "trades": 8,
     "trading_days": 0
   },
   "sleeves": [
@@ -122,23 +122,31 @@
       "qty": "0",
       "weight": "0.7",
       "issues": ""
+    },
+    {
+      "ts": "2026-07-22T09:02:00",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.7",
+      "issues": ""
     }
   ],
   "plan": {
     "date": "2026-07-22",
-    "text": "flat/weak · dry_run=True · quote=live · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-21.json"
+    "text": "flat/weak · dry_run=True · quote=live · signal=cli"
   },
   "report": {
     "date": "2026-07-22",
-    "text": "mode=trade · trades=7 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-21.json · selfcheck=blocked · snapshot_fallback"
+    "text": "mode=trade · trades=8 · signal=cli · selfcheck=ok · snapshot_fallback"
   },
   "selfcheck": {
-    "ok": false,
-    "badge": "BLOCKED",
-    "action": "force_dry_run_trix_block",
-    "findings": [
-      "trix_bearish_conflict"
-    ]
+    "ok": true,
+    "badge": "OK",
+    "action": "allow",
+    "findings": []
   },
   "equity_curve": [
     {
