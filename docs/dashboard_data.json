@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-07-23 08:45 KST",
-  "status": "T3 plan dry-run · selfcheck-blocked",
+  "updated_at": "2026-07-23 09:01 KST",
+  "status": "T3 trade dry-run · selfcheck-blocked · snapshot-fallback",
   "regime": "고변동 드리프트(현재가 앵커 폐지)",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
     "total": 100004170,
-    "cash": 99895855,
+    "cash": 100000000,
     "invested": 108315,
     "day_pnl": 0,
     "cum_pnl": 4180,
@@ -17,7 +17,7 @@
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 8,
+    "trades": 9,
     "trading_days": 0
   },
   "sleeves": [
@@ -36,7 +36,7 @@
     {
       "name": "S3 현금",
       "target_pct": 30,
-      "used_pct": 99.89,
+      "used_pct": 100.0,
       "desc": "드라이파우더"
     }
   ],
@@ -132,15 +132,25 @@
       "qty": "0",
       "weight": "0.7",
       "issues": ""
+    },
+    {
+      "ts": "2026-07-23T09:01:01",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.7",
+      "issues": ""
     }
   ],
   "plan": {
     "date": "2026-07-23",
-    "text": "flat/weak · dry_run=True · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json"
+    "text": "flat/weak · dry_run=True · quote=live · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json"
   },
   "report": {
     "date": "2026-07-23",
-    "text": "mode=plan · trades=8 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json · selfcheck=blocked"
+    "text": "mode=trade · trades=9 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json · selfcheck=blocked · snapshot_fallback"
   },
   "selfcheck": {
     "ok": false,
