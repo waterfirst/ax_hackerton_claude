@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-07-23 09:02 KST",
-  "status": "T3 trade dry-run",
-  "regime": "crash_continuation",
+  "updated_at": "2026-07-23 11:50 KST",
+  "status": "T3 trade dry-run · selfcheck-blocked",
+  "regime": "고변동 드리프트(현재가 앵커 폐지)",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 100007480,
+    "total": 100007190,
     "cash": 99895855,
-    "invested": 111625,
+    "invested": 111335,
     "day_pnl": 0,
-    "cum_pnl": 7490,
-    "cum_return_pct": 0.0075,
+    "cum_pnl": 7200,
+    "cum_return_pct": 0.0072,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
@@ -23,19 +23,19 @@
   "sleeves": [
     {
       "name": "S1 지수모델",
-      "target_pct": 40,
-      "used_pct": 15,
-      "desc": "KODEX200 롱 / 인버스 숏"
+      "target_pct": 30,
+      "used_pct": 0.11,
+      "desc": "KODEX200 롱 · 검증모드 최대 30%"
     },
     {
       "name": "S2 대형주",
       "target_pct": 30,
       "used_pct": 0,
-      "desc": "삼성전자·SK하이닉스"
+      "desc": "삼성전자·SK하이닉스 · 향후 확장"
     },
     {
       "name": "S3 현금",
-      "target_pct": 30,
+      "target_pct": 40,
       "used_pct": 99.89,
       "desc": "드라이파우더"
     }
@@ -46,23 +46,13 @@
       "name": "KODEX 200",
       "qty": 1,
       "avg_price": 104135,
-      "price": 111625,
-      "value": 111625,
-      "pnl": 7490,
-      "pnl_pct": 7.19
+      "price": 111335,
+      "value": 111335,
+      "pnl": 7200,
+      "pnl_pct": 6.91
     }
   ],
   "trades": [
-    {
-      "ts": "2026-07-18T17:38:29",
-      "action": "hold",
-      "sleeve": "index_etf",
-      "symbol": "069500",
-      "price": "0",
-      "qty": "0",
-      "weight": "0.15",
-      "issues": "order_value_limit"
-    },
     {
       "ts": "2026-07-20T07:05:03",
       "action": "hold",
@@ -152,26 +142,39 @@
       "qty": "0",
       "weight": "0.7",
       "issues": ""
+    },
+    {
+      "ts": "2026-07-23T11:50:52",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.4429",
+      "issues": ""
     }
   ],
   "plan": {
     "date": "2026-07-23",
-    "text": "flat/weak · dry_run=True · quote=live · signal=cli"
+    "text": "flat/weak · dry_run=True · quote=live · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json"
   },
   "report": {
     "date": "2026-07-23",
-    "text": "mode=trade · trades=10 · signal=cli · selfcheck=ok"
+    "text": "mode=trade · trades=10 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json · selfcheck=blocked"
   },
   "selfcheck": {
-    "ok": true,
-    "badge": "OK",
-    "action": "allow",
-    "findings": []
+    "ok": false,
+    "badge": "BLOCKED",
+    "action": "force_dry_run_trix_block",
+    "findings": [
+      "direction_conflict_bearish_regime",
+      "trix_bearish_conflict"
+    ]
   },
   "equity_curve": [
     {
       "date": "2026-07-23",
-      "value": 100007480
+      "value": 100007190
     }
   ]
 }
