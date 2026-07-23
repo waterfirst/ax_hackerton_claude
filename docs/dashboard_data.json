@@ -1,23 +1,23 @@
 {
-  "updated_at": "2026-07-23 09:01 KST",
-  "status": "T3 trade dry-run · selfcheck-blocked · snapshot-fallback",
-  "regime": "고변동 드리프트(현재가 앵커 폐지)",
+  "updated_at": "2026-07-23 09:02 KST",
+  "status": "T3 trade dry-run",
+  "regime": "crash_continuation",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 100004170,
-    "cash": 100000000,
-    "invested": 108315,
+    "total": 100007480,
+    "cash": 99895855,
+    "invested": 111625,
     "day_pnl": 0,
-    "cum_pnl": 4180,
-    "cum_return_pct": 0.0042,
+    "cum_pnl": 7490,
+    "cum_return_pct": 0.0075,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
     "mdd_pct": 0.0,
     "win_rate": null,
     "profit_factor": null,
-    "trades": 9,
+    "trades": 10,
     "trading_days": 0
   },
   "sleeves": [
@@ -36,7 +36,7 @@
     {
       "name": "S3 현금",
       "target_pct": 30,
-      "used_pct": 100.0,
+      "used_pct": 99.89,
       "desc": "드라이파우더"
     }
   ],
@@ -46,10 +46,10 @@
       "name": "KODEX 200",
       "qty": 1,
       "avg_price": 104135,
-      "price": 108315,
-      "value": 108315,
-      "pnl": 4180,
-      "pnl_pct": 4.01
+      "price": 111625,
+      "value": 111625,
+      "pnl": 7490,
+      "pnl_pct": 7.19
     }
   ],
   "trades": [
@@ -142,29 +142,36 @@
       "qty": "0",
       "weight": "0.7",
       "issues": ""
+    },
+    {
+      "ts": "2026-07-23T09:02:18",
+      "action": "hold",
+      "sleeve": "cash",
+      "symbol": "",
+      "price": "0",
+      "qty": "0",
+      "weight": "0.7",
+      "issues": ""
     }
   ],
   "plan": {
     "date": "2026-07-23",
-    "text": "flat/weak · dry_run=True · quote=live · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json"
+    "text": "flat/weak · dry_run=True · quote=live · signal=cli"
   },
   "report": {
     "date": "2026-07-23",
-    "text": "mode=trade · trades=9 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-22.json · selfcheck=blocked · snapshot_fallback"
+    "text": "mode=trade · trades=10 · signal=cli · selfcheck=ok"
   },
   "selfcheck": {
-    "ok": false,
-    "badge": "BLOCKED",
-    "action": "force_dry_run_trix_block",
-    "findings": [
-      "direction_conflict_bearish_regime",
-      "trix_bearish_conflict"
-    ]
+    "ok": true,
+    "badge": "OK",
+    "action": "allow",
+    "findings": []
   },
   "equity_curve": [
     {
       "date": "2026-07-23",
-      "value": 100004170
+      "value": 100007480
     }
   ]
 }
