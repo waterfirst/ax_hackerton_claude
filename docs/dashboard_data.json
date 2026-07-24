@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-07-24 09:03 KST",
-  "status": "T3 trade dry-run · snapshot-fallback",
-  "regime": "crash_continuation",
+  "updated_at": "2026-07-24 16:40 KST",
+  "status": "T3 report live-paper",
+  "regime": "하방추세 지속(저가밀착·매도, 연장 0.29)",
   "account": {
     "type": "모의(paper)",
     "number_masked": "50XXXXXX",
-    "total": 100009085,
-    "cash": 100000000,
-    "invested": 113230,
+    "total": 100002220,
+    "cash": 99895855,
+    "invested": 106365,
     "day_pnl": 0,
-    "cum_pnl": 9095,
-    "cum_return_pct": 0.0091,
+    "cum_pnl": 2230,
+    "cum_return_pct": 0.0022,
     "vs_kospi_pct": 0.0
   },
   "metrics": {
@@ -36,7 +36,7 @@
     {
       "name": "S3 현금",
       "target_pct": 40,
-      "used_pct": 99.99,
+      "used_pct": 99.89,
       "desc": "드라이파우더"
     }
   ],
@@ -46,10 +46,10 @@
       "name": "KODEX 200",
       "qty": 1,
       "avg_price": 104135,
-      "price": 113230,
-      "value": 113230,
-      "pnl": 9095,
-      "pnl_pct": 8.73
+      "price": 106365,
+      "value": 106365,
+      "pnl": 2230,
+      "pnl_pct": 2.14
     }
   ],
   "trades": [
@@ -156,11 +156,11 @@
   ],
   "plan": {
     "date": "2026-07-24",
-    "text": "flat/weak · dry_run=True · quote=live · signal=cli"
+    "text": "short/weak · dry_run=False · quote=10000 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-24.json"
   },
   "report": {
     "date": "2026-07-24",
-    "text": "mode=trade · trades=10 · signal=cli · selfcheck=ok · snapshot_fallback"
+    "text": "mode=report · trades=10 · signal=/home/waterfirst/kospi_diode_claude/records/2026-07-24.json · selfcheck=ok"
   },
   "selfcheck": {
     "ok": true,
@@ -171,7 +171,7 @@
   "equity_curve": [
     {
       "date": "2026-07-24",
-      "value": 100009085
+      "value": 100002220
     }
   ]
 }
